@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Page</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235E5E5E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7'/%3E%3Crect x='14' y='3' width='7' height='7'/%3E%3Crect x='3' y='14' width='7' height='7'/%3E%3Crect x='14' y='14' width='7' height='7'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --text: #eee;
+      --text-dim: rgba(255,255,255,0.5);
+      --text-muted: rgba(255,255,255,0.25);
+      --text-faint: rgba(255,255,255,0.15);
+      --border: rgba(255,255,255,0.1);
+      --border-subtle: rgba(255,255,255,0.06);
+      --btn-bg: rgba(255,255,255,0.08);
+      --btn-border: rgba(255,255,255,0.15);
+      --btn-hover: rgba(255,255,255,0.15);
+      --accent: #e94560;
+      --accent-hover: #c73a52;
+      --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #e94560 100%);
+      --accent-glow: rgba(233, 69, 96, 0.35);
+      --shadow: rgba(0,0,0,0.3);
+      --shadow-lg: rgba(0,0,0,0.4);
+      --checkbox-border: rgba(255,255,255,0.25);
+      --todo-border: rgba(255,255,255,0.08);
+      --todo-done: rgba(255,255,255,0.3);
+      --resize-line: rgba(255,255,255,0.2);
+    }
+    [data-theme="light"] {
+      --bg: #e8edf5;
+      --surface: #ffffff;
+      --text: #1a1a2e;
+      --text-dim: rgba(0,0,0,0.8);
+      --text-muted: rgba(0,0,0,0.3);
+      --text-faint: rgba(0,0,0,0.15);
+      --border: rgba(0,0,0,0.1);
+      --border-subtle: rgba(0,0,0,0.06);
+      --btn-bg: rgba(0,0,0,0.06);
+      --btn-border: rgba(0,0,0,0.12);
+      --btn-hover: rgba(0,0,0,0.1);
+      --accent: #4a6fa5;
+      --accent-hover: #3d5d8a;
+      --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #4a6fa5 100%);
+      --accent-glow: rgba(79, 70, 229, 0.25);
+      --shadow: rgba(0,0,0,0.08);
+      --shadow-lg: rgba(0,0,0,0.12);
+      --checkbox-border: rgba(0,0,0,0.25);
+      --todo-border: rgba(0,0,0,0.08);
+      --todo-done: rgba(0,0,0,0.3);
+      --resize-line: rgba(0,0,0,0.2);
+    }
+    [data-theme="light"] .widget-sticky { background: #fdf4a3; border-color: #e8df7a; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* Buttons */
+    .btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text-dim);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn:hover { background: var(--btn-hover); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .btn-sm { padding: 3px 10px; font-size: 11px; border-radius: 6px; }
+
+    /* Top bar */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 40px 40px;
+    }
+    .top-right { display: flex; align-items: center; gap: 12px; }
+    .top-right button {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.2s ease,
+                  border-color 0.2s ease;
+    }
+    .top-right button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--shadow-lg);
+    }
+    #snap-toggle { opacity: 0.7; }
+    #snap-toggle.active { opacity: 1; color: var(--accent); }
+    .icon-sun, .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="light"] .icon-moon { display: block; }
+    #add-widget-btn {
+      background: rgba(22, 33, 62, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    [data-theme="light"] #add-widget-btn {
+      background: rgba(255, 255, 255, 0.85);
+    }
+    #add-widget-btn:hover {
+      background: rgba(22, 33, 62, 0.95);
+      border-color: var(--text-dim);
+    }
+    [data-theme="light"] #add-widget-btn:hover {
+      background: rgba(255, 255, 255, 0.95);
+    }
+    #add-widget-btn:active { transform: translateY(1px) scale(0.98); }
+    #add-widget-btn svg {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #add-widget-btn:hover svg {
+      transform: rotate(90deg);
+    }
+    .add-widget-wrap { position: relative; }
+
+    /* Widget dropdown */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 100%;
+      background: rgba(22, 33, 62, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 100;
+      min-width: 190px;
+      box-shadow: 0 12px 40px var(--shadow-lg);
+      padding: 6px;
+      animation: dropdownIn 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    [data-theme="light"] .dropdown {
+      background: rgba(255, 255, 255, 0.85);
+    }
+    @keyframes dropdownIn {
+      from { opacity: 0; transform: translateY(-8px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .dropdown.show { display: block; }
+    .dropdown-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 8px;
+      color: var(--text-dim);
+      transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dropdown-item svg { flex-shrink: 0; transition: transform 0.2s ease; }
+    .dropdown-item:hover {
+      background: var(--btn-bg);
+      color: var(--text);
+      transform: translateX(4px);
+    }
+    .dropdown-item:hover svg {
+      transform: scale(1.1);
+    }
+
+    /* Canvas area */
+    #widget-area {
+      position: absolute;
+      top: 100px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    #widget-area.grid-bg {
+      background-size: 20px 20px;
+      background-image:
+        linear-gradient(to right, rgba(156,163,175,0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(156,163,175,0.08) 1px, transparent 1px);
+    }
+    .dark #widget-area.grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    }
+
+    /* Widgets */
+    .widget {
+      position: absolute;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 4px 20px var(--shadow);
+      min-width: 220px;
+      min-height: 120px;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .widget:not(.widget-clock):hover { box-shadow: 0 10px 35px rgba(0,0,0,0.5); }
+    .dark .widget:not(.widget-clock):hover { box-shadow: 0 10px 35px rgba(0,0,0,0.7); }
+    .widget-header {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--btn-bg);
+      border-bottom: 1px solid var(--border-subtle);
+      gap: 8px;
+      flex-shrink: 0;
+      cursor: grab;
+    }
+    .widget-header:active { cursor: grabbing; }
+    .drag-handle {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1;
+      user-select: none;
+    }
+    .widget-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      flex: 1;
+    }
+    .widget-close {
+      cursor: pointer;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      transition: color 0.15s;
+    }
+    .widget-close:hover { color: var(--accent); }
+    .widget-body {
+      flex: 1;
+      padding: 12px;
+      overflow: auto;
+      position: relative;
+    }
+
+    /* Resize handle */
+    .resize-handle {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 18px;
+      height: 18px;
+      cursor: nwse-resize;
+    }
+    .resize-handle::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 0 18px 18px;
+      border-color: transparent transparent rgba(180,180,180,0.3) transparent;
+      transition: border-color 0.15s;
+    }
+    .resize-handle:hover::after { border-color: transparent transparent rgba(180,180,180,0.6) transparent; }
+
+    /* Sticky note */
+    .sticky-note textarea {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      line-height: 1.6;
+    }
+    .sticky-note textarea::placeholder { color: var(--text-muted); }
+    .widget-sticky:focus-within,
+    .widget-todo:focus-within { box-shadow: 0 8px 25px rgba(0,0,0,0.55); }
+    .dark .widget-sticky:focus-within,
+    .dark .widget-todo:focus-within { box-shadow: 0 8px 25px rgba(0,0,0,0.35); }
+
+    /* Clock widget */
+    .widget-clock { min-width: 300px; min-height: 90px; background: transparent; border-color: transparent; box-shadow: none; }
+    .widget-clock .widget-body { padding: 6px 12px; }
+    .widget-clock .widget-header { background: transparent; border-bottom-color: transparent; }
+    .widget-clock .widget-header,
+    .widget-clock .drag-handle,
+    .widget-clock .widget-close,
+    .widget-clock .resize-handle::after { opacity: 0; transition: opacity 0.2s; }
+    .widget-clock:hover .widget-header,
+    .widget-clock:hover .drag-handle,
+    .widget-clock:hover .widget-close,
+    .widget-clock:hover .resize-handle::after { opacity: 1; }
+    .clock-body {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      height: 100%;
+      padding: 6px 0;
+      overflow: hidden;
+    }
+    .clock-display {
+      font-weight: 300;
+      letter-spacing: 2px;
+      font-variant-numeric: tabular-nums;
+      color: var(--text);
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .clock-toggle-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .clock-switch-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    .clock-switch {
+      position: relative;
+      width: 34px;
+      height: 18px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      border-radius: 9px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .clock-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+    }
+    .clock-switch:hover::after {
+      background: var(--text-dim);
+    }
+    .clock-switch.active {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .clock-switch.active::after {
+      transform: translateX(16px);
+      background: #fff;
+    }
+
+    /* Calendar widget */
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .cal-month-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      text-align: center;
+    }
+    .cal-day-header {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 2px 0 4px;
+    }
+    .cal-day {
+      font-size: 13px;
+      padding: 4px 0;
+      border-radius: 50%;
+      color: var(--text);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cal-day.other-month { color: var(--text-muted); }
+    .cal-day.today {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 6px;
+    }
+    .widget-calendar .widget-body { overflow: hidden; }
+
+    /* Todo */
+    .todo-list { list-style: none; }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+    }
+    .todo-item input[type="checkbox"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--checkbox-border);
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .todo-item input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .todo-item input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 5px;
+      height: 9px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .todo-item .todo-text {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--todo-border);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      padding: 4px 0;
+    }
+    .todo-item .todo-text::placeholder { color: var(--text-muted); }
+    .todo-item.done .todo-text {
+      text-decoration: line-through;
+      color: var(--todo-done);
+    }
+    .todo-item .todo-delete {
+      cursor: pointer;
+      color: var(--text-faint);
+      font-size: 14px;
+      transition: color 0.15s;
+      flex-shrink: 0;
+    }
+    .todo-item .todo-delete:hover { color: var(--accent); }
+    .add-todo {
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 6px 0;
+      transition: color 0.15s;
+    }
+    .add-todo:hover { color: var(--text-dim); }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      min-width: 300px;
+      box-shadow: 0 8px 30px var(--shadow-lg);
+      text-align: center;
+    }
+    .modal p {
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .modal-buttons { display: flex; gap: 10px; justify-content: center; }
+    .modal-btn { padding: 8px 20px; font-size: 14px; }
+    .modal-btn-cancel { background: var(--btn-bg); color: var(--text-dim); }
+    .modal-btn-cancel:hover { background: var(--btn-hover); }
+    .modal-btn-confirm { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .modal-btn-confirm:hover { background: var(--accent-hover); }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="top-right">
+      <button id="snap-toggle" class="btn active" aria-label="Toggle snap to grid">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+      </button>
+      <button id="theme-toggle" class="btn" aria-label="Toggle theme">
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <div class="add-widget-wrap">
+        <button id="add-widget-btn" class="btn btn-primary" aria-label="Add Widget">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="dropdown" id="widget-dropdown">
+          <div class="dropdown-item" data-type="sticky">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+            Sticky Note
+          </div>
+          <div class="dropdown-item" data-type="todo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="11" x2="17" y2="11"/><line x1="9" y1="15" x2="17" y2="15"/><line x1="9" y1="7" x2="17" y2="7"/><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+            Todo List
+          </div>
+          <div class="dropdown-item" data-type="clock">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Clock
+          </div>
+          <div class="dropdown-item" data-type="calendar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Calendar
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div id="widget-area"></div>
+
+  <div class="modal-overlay" id="close-modal">
+    <div class="modal">
+      <p>Remove this widget?</p>
+      <div class="modal-buttons">
+        <button class="btn modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>
+        <button class="btn modal-btn modal-btn-confirm" id="modal-confirm">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SNAP = 20;
+    let snapToGrid = localStorage.getItem('snapToGrid') !== 'false';
+
+    // Snap toggle
+    const snapToggle = document.getElementById('snap-toggle');
+    const widgetArea = document.getElementById('widget-area');
+    if (!snapToGrid) snapToggle.classList.remove('active');
+    if (snapToGrid) widgetArea.classList.add('grid-bg');
+    snapToggle.addEventListener('click', () => {
+      snapToGrid = !snapToGrid;
+      snapToggle.classList.toggle('active', snapToGrid);
+      widgetArea.classList.toggle('grid-bg', snapToGrid);
+      localStorage.setItem('snapToGrid', snapToGrid);
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    // Widget persistence
+    const WIDGETS_KEY = 'startpage_widgets';
+    let nextWidgetId = 1;
+
+    function saveWidgets() {
+      const widgets = document.querySelectorAll('.widget');
+      const data = [];
+      widgets.forEach(w => {
+        const type = w.dataset.type;
+        const entry = {
+          id: w.dataset.id,
+          type,
+          x: parseInt(w.style.left) || w.offsetLeft,
+          y: parseInt(w.style.top) || w.offsetTop,
+          width: w.offsetWidth,
+          height: w.offsetHeight,
+          zIndex: parseInt(w.style.zIndex) || 10,
+        };
+        if (type === 'sticky') {
+          entry.text = w.querySelector('textarea').value;
+        } else if (type === 'clock') {
+          entry.format = w.dataset.format || '12h';
+        } else if (type === 'calendar') {
+          entry.viewMonth = parseInt(w.dataset.viewMonth);
+          entry.viewYear = parseInt(w.dataset.viewYear);
+        } else {
+          entry.items = [];
+          w.querySelectorAll('.todo-item').forEach(li => {
+            entry.items.push({
+              text: li.querySelector('.todo-text').value,
+              done: li.querySelector('input[type="checkbox"]').checked,
+            });
+          });
+        }
+        data.push(entry);
+      });
+      localStorage.setItem(WIDGETS_KEY, JSON.stringify(data));
+    }
+
+    function loadWidgets() {
+      const raw = localStorage.getItem(WIDGETS_KEY);
+      if (!raw) return;
+      let data;
+      try { data = JSON.parse(raw); } catch { return; }
+      data.forEach(entry => {
+        createWidget(entry.type, entry.x, entry.y, entry);
+      });
+    }
+
+    // Dropdown
+    const addBtn = document.getElementById('add-widget-btn');
+    const dropdown = document.getElementById('widget-dropdown');
+    addBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+    document.addEventListener('click', () => dropdown.classList.remove('show'));
+
+    // Widget creation
+    const area = document.getElementById('widget-area');
+    let widgetZIndex = 10;
+
+    dropdown.addEventListener('click', (e) => {
+      const item = e.target.closest('.dropdown-item');
+      if (!item) return;
+      const type = item.dataset.type;
+      createWidget(type, 100 + Math.random() * 200, 20 + Math.random() * 150);
+      dropdown.classList.remove('show');
+    });
+
+    function snap(v) { return snapToGrid ? Math.round(v / SNAP) * SNAP : v; }
+
+    function createWidget(type, x, y, saved) {
+      const w = document.createElement('div');
+      w.className = 'widget' + (type === 'clock' ? ' widget-clock' : type === 'sticky' ? ' widget-sticky' : type === 'calendar' ? ' widget-calendar' : type === 'todo' ? ' widget-todo' : '');
+      w.dataset.type = type;
+      w.dataset.id = saved ? saved.id : nextWidgetId++;
+      if (!saved) nextWidgetId = Math.max(nextWidgetId, parseInt(w.dataset.id) + 1);
+      w.style.left = snap(saved ? saved.x : x) + 'px';
+      w.style.top = snap(saved ? saved.y : y) + 'px';
+      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : 280)) + 'px';
+      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : 200)) + 'px';
+      w.style.zIndex = saved ? saved.zIndex : ++widgetZIndex;
+
+      const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : 'Todo List';
+
+      w.innerHTML = `
+        <div class="widget-header">
+          <span class="drag-handle">⠿</span>
+          <span class="widget-title">${title}</span>
+          <span class="widget-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></span>
+        </div>
+        <div class="widget-body">${type === 'sticky' ? stickyHTML(saved) : type === 'clock' ? clockHTML(saved) : type === 'calendar' ? calendarHTML() : todoHTML(saved)}</div>
+        <div class="resize-handle"></div>
+      `;
+
+      area.appendChild(w);
+
+      // Bring to front
+      w.addEventListener('mousedown', () => {
+        w.style.zIndex = ++widgetZIndex;
+      });
+
+      // Close
+      w.querySelector('.widget-close').addEventListener('click', () => {
+        showModal(() => {
+          if (w._clockCleanup) w._clockCleanup();
+          w.remove();
+          saveWidgets();
+        });
+      });
+
+      // Drag with snap
+      setupDrag(w);
+      // Resize
+      setupResize(w);
+
+      // Todo logic
+      if (type === 'todo') setupTodo(w, saved);
+      // Clock logic
+      if (type === 'clock') setupClock(w, saved);
+      // Calendar logic
+      if (type === 'calendar') setupCalendar(w, saved);
+
+      saveWidgets();
+    }
+
+    function stickyHTML(saved) {
+      const val = saved ? saved.text : '';
+      return `<div class="sticky-note"><textarea placeholder="Type something...">${val}</textarea></div>`;
+    }
+
+    function clockHTML(saved) {
+      const format = saved ? saved.format : '12h';
+      return `
+        <div class="clock-body">
+          <div class="clock-display"></div>
+          <div class="clock-toggle-wrap">
+            <span class="clock-switch-label">24h</span>
+            <div class="clock-switch${format === '24h' ? ' active' : ''}" aria-label="Toggle 24-hour format"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function calendarHTML() {
+      const days = ['S','M','T','W','T','F','S'];
+      const headers = days.map(d => `<div class="cal-day-header">${d}</div>`).join('');
+      const cells = Array.from({length: 35}, () => '<div class="cal-day"></div>').join('');
+      return `
+        <div class="cal-nav">
+          <button class="btn btn-icon cal-prev">&lsaquo;</button>
+          <span class="cal-month-label"></span>
+          <button class="btn btn-sm cal-today">Today</button>
+          <button class="btn btn-icon cal-next">&rsaquo;</button>
+        </div>
+        <div class="cal-grid">${headers}${cells}</div>
+      `;
+    }
+
+    function setupClock(w, saved) {
+      const body = w.querySelector('.widget-body');
+      const display = body.querySelector('.clock-display');
+      const toggleSwitch = body.querySelector('.clock-switch');
+      let format = saved ? saved.format : '12h';
+      w.dataset.format = format;
+
+      function updateClockTime() {
+        const now = new Date();
+        const h = now.getHours();
+        const m = String(now.getMinutes()).padStart(2, '0');
+        if (format === '12h') {
+          const ampm = h >= 12 ? 'PM' : 'AM';
+          const h12 = h % 12 || 12;
+          display.textContent = `${h12}:${m} ${ampm}`;
+        } else {
+          display.textContent = `${String(h).padStart(2, '0')}:${m}`;
+        }
+      }
+
+      function updateFontSize() {
+        const fw = Math.max(0, body.offsetWidth - 70);
+        const fh = body.offsetHeight;
+        const ratio = format === '12h' ? 0.22 : 0.32;
+        const size = Math.min(fw * ratio, fh * 0.8);
+        display.style.fontSize = Math.max(16, size) + 'px';
+      }
+
+      updateClockTime();
+      updateFontSize();
+      const interval = setInterval(updateClockTime, 1000);
+
+      toggleSwitch.addEventListener('click', () => {
+        format = format === '12h' ? '24h' : '12h';
+        w.dataset.format = format;
+        toggleSwitch.classList.toggle('active', format === '24h');
+        updateClockTime();
+        updateFontSize();
+        saveWidgets();
+      });
+
+      const ro = new ResizeObserver(() => updateFontSize());
+      ro.observe(body);
+
+      w._clockCleanup = () => { clearInterval(interval); ro.disconnect(); };
+    }
+
+    function setupCalendar(w, saved) {
+      const body = w.querySelector('.widget-body');
+      const label = body.querySelector('.cal-month-label');
+      const cells = body.querySelectorAll('.cal-day');
+      const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const today = new Date();
+      let viewYear = saved ? saved.viewYear : today.getFullYear();
+      let viewMonth = saved ? saved.viewMonth : today.getMonth();
+      w.dataset.viewMonth = viewMonth;
+      w.dataset.viewYear = viewYear;
+
+      function renderCalendar() {
+        label.textContent = `${monthNames[viewMonth]} ${viewYear}`;
+        const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+        const daysInPrev = new Date(viewYear, viewMonth, 0).getDate();
+
+        cells.forEach((cell, i) => {
+          let dayNum, isOther = false;
+          if (i < firstDay) {
+            dayNum = daysInPrev - firstDay + i + 1;
+            isOther = true;
+          } else if (i >= firstDay + daysInMonth) {
+            dayNum = i - firstDay - daysInMonth + 1;
+            isOther = true;
+          } else {
+            dayNum = i - firstDay + 1;
+          }
+          cell.textContent = dayNum;
+          cell.classList.toggle('other-month', isOther);
+          cell.classList.toggle('today',
+            !isOther && viewYear === today.getFullYear() && viewMonth === today.getMonth() && dayNum === today.getDate()
+          );
+        });
+      }
+
+      body.querySelector('.cal-prev').addEventListener('click', () => {
+        viewMonth--;
+        if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+        w.dataset.viewMonth = viewMonth;
+        w.dataset.viewYear = viewYear;
+        renderCalendar();
+        saveWidgets();
+      });
+
+      body.querySelector('.cal-next').addEventListener('click', () => {
+        viewMonth++;
+        if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+        w.dataset.viewMonth = viewMonth;
+        w.dataset.viewYear = viewYear;
+        renderCalendar();
+        saveWidgets();
+      });
+
+      body.querySelector('.cal-today').addEventListener('click', () => {
+        const now = new Date();
+        viewYear = now.getFullYear();
+        viewMonth = now.getMonth();
+        w.dataset.viewMonth = viewMonth;
+        w.dataset.viewYear = viewYear;
+        renderCalendar();
+        saveWidgets();
+      });
+
+      renderCalendar();
+    }
+
+    function todoHTML(saved) {
+      const items = saved ? saved.items : [{ text: '', done: false }];
+      const lis = items.map(it => `
+        <li class="todo-item${it.done ? ' done' : ''}">
+          <input type="checkbox"${it.done ? ' checked' : ''}><input class="todo-text" placeholder="New task..." value="${(it.text || '').replace(/"/g, '&quot;')}"><span class="todo-delete">✕</span>
+        </li>
+      `).join('');
+      return `
+        <ul class="todo-list">${lis}</ul>
+        <div class="add-todo">+ Add task</div>
+      `;
+    }
+
+    function setupTodo(w, saved) {
+      const body = w.querySelector('.widget-body');
+      const list = body.querySelector('.todo-list');
+      const addBtn = body.querySelector('.add-todo');
+
+      function attachEvents(li) {
+        const cb = li.querySelector('input[type="checkbox"]');
+        const del = li.querySelector('.todo-delete');
+        const text = li.querySelector('.todo-text');
+
+        cb.addEventListener('change', () => {
+          li.classList.toggle('done', cb.checked);
+          saveWidgets();
+        });
+        del.addEventListener('click', () => { li.remove(); saveWidgets(); });
+        text.addEventListener('input', () => saveWidgets());
+        text.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            li.innerHTML = `<input type="checkbox"><input class="todo-text" placeholder="New task..."><span class="todo-delete">✕</span>`;
+            list.appendChild(li);
+            li.querySelector('.todo-text').focus();
+            attachEvents(li);
+            saveWidgets();
+          }
+        });
+      }
+
+      addBtn.addEventListener('click', () => {
+        const li = document.createElement('li');
+        li.className = 'todo-item';
+        li.innerHTML = `<input type="checkbox"><input class="todo-text" placeholder="New task..."><span class="todo-delete">✕</span>`;
+        list.appendChild(li);
+        li.querySelector('.todo-text').focus();
+        attachEvents(li);
+        saveWidgets();
+      });
+
+      list.querySelectorAll('.todo-item').forEach(attachEvents);
+    }
+
+    function setupDrag(el) {
+      const handle = el.querySelector('.widget-header');
+      let dragging = false, startX, startY, origLeft, origTop;
+
+      handle.addEventListener('mousedown', (e) => {
+        dragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        origLeft = el.offsetLeft;
+        origTop = el.offsetTop;
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        el.style.left = snap(origLeft + e.clientX - startX) + 'px';
+        el.style.top = snap(origTop + e.clientY - startY) + 'px';
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (dragging) { dragging = false; saveWidgets(); }
+      });
+    }
+
+    function setupResize(el) {
+      const handle = el.querySelector('.resize-handle');
+      let resizing = false, startX, startY, startW, startH;
+
+      const minW = parseInt(getComputedStyle(el).minWidth);
+      const minH = parseInt(getComputedStyle(el).minHeight);
+
+      handle.addEventListener('mousedown', (e) => {
+        resizing = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        startW = el.offsetWidth;
+        startH = el.offsetHeight;
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!resizing) return;
+        const newW = Math.max(minW, startW + e.clientX - startX);
+        const newH = Math.max(minH, startH + e.clientY - startY);
+        el.style.width = snap(newW) + 'px';
+        el.style.height = snap(newH) + 'px';
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (resizing) { resizing = false; saveWidgets(); }
+      });
+    }
+
+    // Modal
+    const closeModal = document.getElementById('close-modal');
+    const modalCancel = document.getElementById('modal-cancel');
+    const modalConfirm = document.getElementById('modal-confirm');
+    let modalCallback = null;
+
+    function showModal(cb) {
+      modalCallback = cb;
+      closeModal.classList.add('show');
+    }
+
+    modalCancel.addEventListener('click', () => {
+      closeModal.classList.remove('show');
+      modalCallback = null;
+    });
+
+    modalConfirm.addEventListener('click', () => {
+      closeModal.classList.remove('show');
+      if (modalCallback) modalCallback();
+      modalCallback = null;
+    });
+
+    closeModal.addEventListener('click', (e) => {
+      if (e.target === closeModal) {
+        closeModal.classList.remove('show');
+        modalCallback = null;
+      }
+    });
+
+    // Sticky text change tracking
+    document.addEventListener('input', (e) => {
+      if (e.target.closest('.sticky-note textarea')) saveWidgets();
+    });
+
+    // Restore saved widgets
+    loadWidgets();
+  </script>
+</body>
+</html>
