@@ -619,11 +619,14 @@
     /* Shortcuts widget */
     .widget-shortcuts {
       min-width: 274px;
-      min-height: 137px;
+      min-height: 149px;
+    }
+    .widget-shortcuts .widget-body {
+      overflow: hidden;
     }
     .shortcuts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, 72px);
+      grid-template-columns: repeat(auto-fill, 82px);
       gap: 12px;
       justify-content: center;
       align-content: center;
@@ -634,15 +637,18 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 72px;
-      height: 72px;
+      width: 82px;
+      height: 82px;
       border-radius: 12px;
-      border: 1px solid var(--border-subtle);
-      transition: background-color 0.2s, transform 0.2s;
+      border: 1px solid transparent;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    .shortcut-cell.filled:hover,
+    .shortcut-cell.filled:focus-within {
+      border-color: var(--border-subtle);
     }
     .shortcut-cell.filled:hover {
       background-color: var(--btn-bg);
-      transform: translateY(-2px);
     }
     .shortcut-cell a {
       display: flex;
@@ -655,9 +661,9 @@
       gap: 6px;
     }
     .shortcut-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
       background: var(--surface);
       border: 1px solid var(--border);
       padding: 6px;
@@ -676,35 +682,45 @@
       padding: 0 4px;
     }
     .shortcut-cell.empty {
-      border: 1.5px dashed var(--border);
+      border: 1.5px dashed transparent;
       background: transparent;
       cursor: pointer;
       position: relative;
+      transition: background-color 0.2s, border-color 0.2s;
     }
-    .shortcut-cell.empty .shortcut-add-icon,
+    .shortcut-cell.empty:hover,
+    .shortcut-cell.empty:focus-visible {
+      border-color: var(--border);
+    }
+    .shortcut-cell.empty .shortcut-add-icon {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-muted);
+      opacity: 0.6;
+      transition: opacity 0.2s, transform 0.2s;
+    }
     .shortcut-cell.empty .shortcut-label {
+      position: absolute;
       opacity: 0;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, transform 0.2s;
+      transform: translateY(5px);
+      font-size: 11px;
+      text-align: center;
+      color: var(--text-muted);
     }
     .shortcut-cell.empty:hover .shortcut-add-icon,
-    .shortcut-cell.empty:hover .shortcut-label {
-      opacity: 1;
-    }
-    .shortcut-cell.add-shortcut-btn {
-      cursor: pointer;
-      border: 1.5px dashed var(--border);
-      background: transparent;
+    .shortcut-cell.empty:focus-visible .shortcut-add-icon {
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s, background-color 0.2s;
+      transform: scale(0.8);
     }
-    .widget-shortcuts:hover .shortcut-cell.add-shortcut-btn {
+    .shortcut-cell.empty:hover .shortcut-label,
+    .shortcut-cell.empty:focus-visible .shortcut-label {
       opacity: 1;
-      pointer-events: auto;
+      transform: translateY(0);
     }
-    .shortcut-cell.add-shortcut-btn:hover {
-      background-color: var(--btn-bg);
-      border-color: var(--text-dim);
+    .shortcut-cell.empty:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
     .shortcut-add-icon {
       font-size: 18px;
@@ -813,7 +829,7 @@
       </div>
       <div style="margin-bottom: 20px;">
         <label for="shortcut-title" style="display: block; font-size: 11px; color: var(--text-dim); margin-bottom: 4px; font-weight: 500;">Name</label>
-        <input type="text" id="shortcut-title" placeholder="My Site" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--btn-bg); color: var(--text); outline: none; font-size: 13px;">
+        <input type="text" id="shortcut-title" placeholder="Optional (defaults to website name)" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--btn-bg); color: var(--text); outline: none; font-size: 13px;">
       </div>
       <div class="modal-buttons" style="justify-content: flex-end;">
         <button type="button" class="btn modal-btn modal-btn-cancel" id="shortcut-cancel" style="padding: 6px 14px; font-size: 13px;">Cancel</button>
@@ -927,11 +943,11 @@
       w.className = 'widget' + (type === 'clock' ? ' widget-clock' : type === 'sticky' ? ' widget-sticky' : type === 'calendar' ? ' widget-calendar' : type === 'todo' ? ' widget-todo' : type === 'shortcuts' ? ' widget-shortcuts' : '');
       w.dataset.type = type;
       w.dataset.id = saved ? saved.id : nextWidgetId++;
-      if (!saved) nextWidgetId = Math.max(nextWidgetId, parseInt(w.dataset.id) + 1);
+      nextWidgetId = Math.max(nextWidgetId, parseInt(w.dataset.id) + 1);
       w.style.left = snap(saved ? saved.x : x) + 'px';
       w.style.top = snap(saved ? saved.y : y) + 'px';
-      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 358 : 280)) + 'px';
-      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 221 : 200)) + 'px';
+      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 274 : 280)) + 'px';
+      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 149 : 200)) + 'px';
       w.style.zIndex = saved ? saved.zIndex : ++widgetZIndex;
 
       const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : type === 'todo' ? 'Todo List' : 'Shortcuts';
@@ -967,6 +983,8 @@
         e.stopPropagation();
         const menuDropdown = w.querySelector('.widget-menu-dropdown');
         if (menuDropdown.hidePopover) menuDropdown.hidePopover();
+        const triggerBtn = w.querySelector('.widget-menu-btn');
+        if (triggerBtn) triggerBtn.blur();
         showModal('Remove this widget?', () => {
           if (w._clockCleanup) w._clockCleanup();
           w.remove();
@@ -1261,14 +1279,73 @@
     }
 
     function setupShortcuts(w, saved) {
+      function resizeShortcutsToFit() {
+        const CELL_SIZE = 82;
+        const paddingW = 34;
+        const paddingH = 67;
+        const GAP = 12;
+        const curW = parseFloat(w.style.width) || w.offsetWidth || 274;
+        
+        let C = Math.floor((curW - paddingW + GAP) / (CELL_SIZE + GAP));
+        C = Math.max(1, Math.min(12, C));
+        
+        const cells = JSON.parse(w.dataset.cells || '[]');
+        const totalItems = cells.length;
+        const R = Math.ceil(totalItems / C) || 1;
+        
+        const snapW = C * CELL_SIZE + (C - 1) * GAP + paddingW;
+        const snapH = R * CELL_SIZE + (R - 1) * GAP + paddingH;
+        
+        w.style.width = snapW + 'px';
+        w.style.height = snapH + 'px';
+      }
+
+      // Options menu extension
+      const dropdown = w.querySelector('.widget-menu-dropdown');
+      if (dropdown && !dropdown.querySelector('.add-link-option')) {
+        const addLinkBtn = document.createElement('button');
+        addLinkBtn.className = 'widget-menu-item add-link-option';
+        addLinkBtn.type = 'button';
+        addLinkBtn.textContent = 'Add link';
+        
+        const removeBtn = dropdown.querySelector('.delete-widget');
+        dropdown.insertBefore(addLinkBtn, removeBtn);
+        
+        addLinkBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (dropdown.hidePopover) dropdown.hidePopover();
+          const triggerBtn = w.querySelector('.widget-menu-btn');
+          if (triggerBtn) triggerBtn.blur();
+          
+          let cells = JSON.parse(w.dataset.cells || '[]');
+          const idx = cells.length;
+          cells.push({ type: 'empty' });
+          w.dataset.cells = JSON.stringify(cells);
+          render();
+          resizeShortcutsToFit();
+          saveWidgets();
+          
+          openShortcutModal((newShortcut) => {
+            cells[idx] = {
+              type: 'shortcut',
+              url: newShortcut.url,
+              title: newShortcut.title,
+              domain: newShortcut.domain,
+              faviconUrl: newShortcut.faviconUrl
+            };
+            w.dataset.cells = JSON.stringify(cells);
+            saveWidgets();
+            render();
+            resizeShortcutsToFit();
+          });
+        });
+      }
+
       let cells = [];
       if (saved && saved.cells) {
         cells = saved.cells;
       } else {
         cells = [
-          { type: 'empty' },
-          { type: 'empty' },
-          { type: 'empty' },
           { type: 'empty' }
         ];
       }
@@ -1299,6 +1376,7 @@
                 w.dataset.cells = JSON.stringify(cells);
                 saveWidgets();
                 render();
+                resizeShortcutsToFit();
               });
             });
           } else {
@@ -1317,7 +1395,7 @@
             cell.innerHTML = `
               <div class="shortcut-add-icon" aria-hidden="true">+</div>
               <span class="shortcut-label">Add link</span>
-              <button class="shortcut-delete" data-index="${idx}" aria-label="Remove empty slot" title="Delete cell">&times;</button>
+              <button class="shortcut-delete" data-index="${idx}" aria-label="Remove cell slot" title="Delete cell">&times;</button>
             `;
             cell.addEventListener('click', (e) => {
               if (e.target.closest('.shortcut-delete')) return;
@@ -1332,6 +1410,7 @@
                 w.dataset.cells = JSON.stringify(cells);
                 saveWidgets();
                 render();
+                resizeShortcutsToFit();
               });
             });
             cell.querySelector('.shortcut-delete').addEventListener('click', (e) => {
@@ -1342,38 +1421,16 @@
                 w.dataset.cells = JSON.stringify(cells);
                 saveWidgets();
                 render();
+                resizeShortcutsToFit();
               });
             });
           }
           grid.appendChild(cell);
         });
-
-        const addCell = document.createElement('button');
-        addCell.setAttribute('type', 'button');
-        addCell.setAttribute('aria-label', 'Add new shortcut link');
-        addCell.className = 'shortcut-cell add-shortcut-btn';
-        addCell.innerHTML = `
-          <div class="shortcut-add-icon">+</div>
-          <span class="shortcut-label">Add link</span>
-        `;
-        addCell.addEventListener('click', () => {
-          openShortcutModal((newShortcut) => {
-            cells.push({
-              type: 'shortcut',
-              url: newShortcut.url,
-              title: newShortcut.title,
-              domain: newShortcut.domain,
-              faviconUrl: newShortcut.faviconUrl
-            });
-            w.dataset.cells = JSON.stringify(cells);
-            saveWidgets();
-            render();
-          });
-        });
-        grid.appendChild(addCell);
       }
 
       render();
+      resizeShortcutsToFit();
     }
 
     function setupDrag(el) {
@@ -1409,7 +1466,7 @@
     function setupResize(el) {
       const handle = el.querySelector('.resize-handle');
       let resizing = false, startX, startY, startW, startH;
-      let paddingW = 34, paddingH = 65;
+      const paddingW = 34, paddingH = 67;
 
       const minW = parseInt(getComputedStyle(el).minWidth);
       const minH = parseInt(getComputedStyle(el).minHeight);
@@ -1420,12 +1477,6 @@
         startY = e.clientY;
         startW = el.offsetWidth;
         startH = el.offsetHeight;
-
-        if (el.dataset.type === 'shortcuts') {
-          const grid = el.querySelector('.shortcuts-grid');
-          paddingW = grid ? (el.offsetWidth - grid.clientWidth) : 34;
-          paddingH = grid ? (el.offsetHeight - grid.clientHeight) : 65;
-        }
 
         e.preventDefault();
         e.stopPropagation();
@@ -1444,13 +1495,13 @@
         if (resizing) {
           resizing = false;
           if (el.dataset.type === 'shortcuts') {
-            const CELL_SIZE = 72;
+            const CELL_SIZE = 82;
             const GAP = 12;
             const curW = el.offsetWidth;
-            let C = Math.round((curW - paddingW + GAP) / (CELL_SIZE + GAP));
+            let C = Math.floor((curW - paddingW + GAP) / (CELL_SIZE + GAP));
             C = Math.max(1, Math.min(12, C));
             const cells = JSON.parse(el.dataset.cells || '[]');
-            const totalItems = cells.length + 1;
+            const totalItems = cells.length;
             const R = Math.ceil(totalItems / C);
 
             const snapW = C * CELL_SIZE + (C - 1) * GAP + paddingW;
@@ -1554,7 +1605,7 @@
     shortcutForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const urlVal = shortcutUrlInput.value.trim();
-      const titleVal = shortcutTitleInput.value.trim();
+      let titleVal = shortcutTitleInput.value.trim();
 
       let validatedUrl = urlVal;
       if (!/^https?:\/\//i.test(validatedUrl)) {
@@ -1568,6 +1619,10 @@
       } catch (err) {
         alert('Please enter a valid URL.');
         return;
+      }
+
+      if (!titleVal) {
+        titleVal = parsedDomain.charAt(0).toUpperCase() + parsedDomain.slice(1);
       }
 
       const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${parsedDomain}`;
