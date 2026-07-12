@@ -10,52 +10,63 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #121212;
-      --surface: #1E1E1E;
+      --bg: #0B0B0C;
+      --top-bar-bg: rgba(11, 11, 12, 0.7);
+      --surface: rgba(24, 24, 28, 0.65);
       --text: #FFFFFF;
-      --text-dim: rgba(255,255,255,0.7);
-      --text-muted: rgba(255,255,255,0.4);
-      --text-faint: rgba(255,255,255,0.25);
-      --border: #2C2C2E;
-      --border-subtle: rgba(255,255,255,0.08);
-      --btn-bg: rgba(255,255,255,0.08);
-      --btn-border: #2C2C2E;
-      --btn-hover: rgba(255,255,255,0.15);
-      --accent: #0097A7;
-      --accent-hover: #00838F;
+      --text-dim: rgba(255, 255, 255, 0.75);
+      --text-muted: rgba(255, 255, 255, 0.45);
+      --text-faint: rgba(255, 255, 255, 0.25);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --btn-bg: rgba(255, 255, 255, 0.06);
+      --btn-border: rgba(255, 255, 255, 0.08);
+      --btn-hover: rgba(255, 255, 255, 0.12);
+      --accent: #00B4D8;
+      --accent-hover: #0096C7;
       --alert: #FF453A;
-      --success: #32D74B;
-      --shadow: rgba(0,0,0,0.3);
-      --shadow-lg: rgba(0,0,0,0.5);
-      --checkbox-border: rgba(255,255,255,0.25);
-      --todo-border: rgba(255,255,255,0.08);
-      --todo-done: rgba(255,255,255,0.55);
-      --resize-line: rgba(255,255,255,0.2);
+      --success: #30D158;
+      --shadow: rgba(0, 0, 0, 0.2);
+      --shadow-lg: rgba(0, 0, 0, 0.45);
+      --checkbox-border: rgba(255, 255, 255, 0.3);
+      --todo-border: rgba(255, 255, 255, 0.08);
+      --todo-done: rgba(255, 255, 255, 0.5);
+      --resize-line: rgba(255, 255, 255, 0.25);
     }
     [data-theme="light"] {
-      --bg: #F2F2F7;
-      --surface: #FFFFFF;
+      --bg: #F4F4F7;
+      --top-bar-bg: rgba(244, 244, 247, 0.7);
+      --surface: rgba(255, 255, 255, 0.65);
       --text: #1C1C1E;
-      --text-dim: rgba(0,0,0,0.6);
-      --text-muted: rgba(0,0,0,0.45);
-      --text-faint: rgba(0,0,0,0.25);
-      --border: #D1D1D6;
-      --border-subtle: rgba(0,0,0,0.06);
-      --btn-bg: rgba(0,0,0,0.06);
-      --btn-border: #D1D1D6;
-      --btn-hover: rgba(0,0,0,0.1);
-      --accent: #007AFF;
-      --accent-hover: #0056CC;
+      --text-dim: rgba(0, 0, 0, 0.7);
+      --text-muted: rgba(0, 0, 0, 0.45);
+      --text-faint: rgba(0, 0, 0, 0.25);
+      --border: rgba(0, 0, 0, 0.1);
+      --border-subtle: rgba(0, 0, 0, 0.05);
+      --btn-bg: rgba(0, 0, 0, 0.05);
+      --btn-border: rgba(0, 0, 0, 0.08);
+      --btn-hover: rgba(0, 0, 0, 0.08);
+      --accent: #0077B6;
+      --accent-hover: #005F9E;
       --alert: #FF3B30;
       --success: #34C759;
-      --shadow: rgba(0,0,0,0.08);
-      --shadow-lg: rgba(0,0,0,0.15);
-      --checkbox-border: rgba(0,0,0,0.25);
-      --todo-border: rgba(0,0,0,0.08);
-      --todo-done: rgba(0,0,0,0.55);
-      --resize-line: rgba(0,0,0,0.2);
+      --shadow: rgba(0, 0, 0, 0.05);
+      --shadow-lg: rgba(0, 0, 0, 0.12);
+      --checkbox-border: rgba(0, 0, 0, 0.25);
+      --todo-border: rgba(0, 0, 0, 0.06);
+      --todo-done: rgba(0, 0, 0, 0.45);
+      --resize-line: rgba(0, 0, 0, 0.2);
     }
-    [data-theme="light"] .widget-sticky { background: #fef9c3; border-color: #e8df7a; }
+    .widget-sticky { background: rgba(254, 249, 195, 0.12); border-color: rgba(254, 249, 195, 0.22); }
+    [data-theme="light"] .widget-sticky { background: rgba(254, 249, 195, 0.75); border-color: rgba(232, 223, 122, 0.6); }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+    [data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.12); }
+    [data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.22); }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -89,15 +100,18 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 32px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      background: var(--top-bar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       height: 56px;
       z-index: 1000;
-      box-shadow: 0 2px 10px var(--shadow);
+      box-shadow: 0 4px 20px var(--shadow);
+      transition: background 0.3s, border-color 0.3s;
     }
     .top-left, .top-center, .top-right {
       display: flex;
@@ -136,12 +150,12 @@
       background: var(--btn-bg);
       color: var(--text-dim);
       cursor: pointer;
-      transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
     }
     .add-widget-action:hover {
       background-color: var(--btn-hover);
       color: var(--text);
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.05);
       box-shadow: 0 4px 12px var(--shadow);
     }
     .add-widget-action:active {
@@ -156,13 +170,13 @@
       justify-content: center;
       border-radius: 8px;
       box-shadow: 0 2px 8px var(--shadow);
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
                   background 0.2s ease,
                   border-color 0.2s ease;
     }
     .top-right button:hover {
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.05);
       box-shadow: 0 6px 20px var(--shadow-lg);
     }
     #snap-toggle { opacity: 0.7; }
@@ -201,18 +215,27 @@
     .widget {
       position: absolute;
       background: var(--surface);
-      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
       border-radius: 16px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 4px 20px var(--shadow);
+      box-shadow: 0 8px 32px 0 var(--shadow);
       min-width: 220px;
       min-height: 120px;
-      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: fadeInScale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
-    .widget:not(.widget-clock):hover { box-shadow: 0 10px 35px rgba(0,0,0,0.5); }
-    .dark .widget:not(.widget-clock):hover { box-shadow: 0 10px 35px rgba(0,0,0,0.7); }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.92) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .widget:not(.widget-clock):hover {
+      box-shadow: 0 12px 40px var(--shadow-lg);
+      transform: translateY(-2px);
+    }
     .widget-header {
       display: flex;
       align-items: center;
@@ -222,8 +245,13 @@
       gap: 8px;
       flex-shrink: 0;
       cursor: grab;
+      transition: outline 0.15s;
     }
     .widget-header:active { cursor: grabbing; }
+    .widget-header:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
     .drag-handle {
       color: var(--text-dim);
       font-size: 16px;
@@ -241,6 +269,9 @@
       display: inline-flex;
     }
     .widget-menu-btn {
+      background: none;
+      border: none;
+      padding: 0;
       cursor: pointer;
       color: var(--text-faint);
       display: flex;
@@ -254,23 +285,26 @@
       color: var(--accent);
     }
     .widget-menu-dropdown {
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
       box-shadow: 0 4px 12px var(--shadow-lg);
-      z-index: 110;
       min-width: 120px;
       padding: 4px;
+      margin: 0;
+      position-area: block-end span-inline-end;
+      inset: auto;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+    .widget-menu-dropdown:popover-open {
+      display: block;
       animation: dropdownIn 0.12s ease-out;
     }
-    .widget-menu-dropdown.show {
-      display: block;
-    }
     .widget-menu-item {
+      background: none;
+      border: none;
+      width: 100%;
+      font-family: inherit;
       padding: 6px 12px;
       font-size: 13px;
       color: var(--text);
@@ -349,7 +383,9 @@
     .widget-clock .resize-handle::after { opacity: 0; transition: opacity 0.2s; }
     .widget-clock:hover .widget-header,
     .widget-clock:hover .widget-menu-btn,
-    .widget-clock:hover .resize-handle::after { opacity: 1; }
+    .widget-clock:hover .resize-handle::after,
+    .widget-clock:focus-within .widget-header,
+    .widget-clock:focus-within .widget-menu-btn { opacity: 1; }
     .clock-body {
       display: flex;
       flex-direction: row;
@@ -359,6 +395,7 @@
       height: 100%;
       padding: 6px 0;
       overflow: hidden;
+      container-type: size;
     }
     .clock-display {
       font-weight: 600;
@@ -368,6 +405,13 @@
       color: var(--text);
       line-height: 1;
       white-space: nowrap;
+      font-size: clamp(16px, min(calc((100cqi - 70px) * var(--clock-ratio, 0.22)), 80cqb), 120px);
+    }
+    .widget-clock[data-format="12h"] {
+      --clock-ratio: 0.22;
+    }
+    .widget-clock[data-format="24h"] {
+      --clock-ratio: 0.32;
     }
     .clock-toggle-wrap {
       display: flex;
@@ -392,7 +436,15 @@
       border: 1px solid var(--btn-border);
       border-radius: 9px;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      padding: 0;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+    .clock-switch:active {
+      transform: scale(0.95);
+    }
+    .clock-switch:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
     .clock-switch::after {
       content: '';
@@ -403,7 +455,7 @@
       height: 12px;
       border-radius: 50%;
       background: var(--text-muted);
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
     }
     .clock-switch:hover::after {
       background: var(--text-dim);
@@ -477,7 +529,10 @@
       cursor: pointer;
       flex-shrink: 0;
       position: relative;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s, transform 0.1s;
+    }
+    .todo-item input[type="checkbox"]:active {
+      transform: scale(0.9);
     }
     .todo-item input[type="checkbox"]:checked {
       background: var(--accent);
@@ -511,13 +566,20 @@
       color: var(--todo-done);
     }
     .todo-item .todo-delete {
+      background: none;
+      border: none;
       cursor: pointer;
       color: var(--text-faint);
       font-size: 14px;
-      transition: color 0.15s;
+      transition: color 0.15s, transform 0.15s;
       flex-shrink: 0;
+      padding: 0 4px;
+      font-family: inherit;
     }
-    .todo-item .todo-delete:hover { color: var(--alert); }
+    .todo-item .todo-delete:hover {
+      color: var(--alert);
+      transform: scale(1.2);
+    }
     .add-todo {
       cursor: pointer;
       color: var(--text-muted);
@@ -527,27 +589,22 @@
     }
     .add-todo:hover { color: var(--text-dim); }
 
-    /* Modal */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-overlay.show { display: flex; }
-    .modal {
+    /* Native Dialog */
+    dialog {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 24px;
       min-width: 300px;
       box-shadow: 0 8px 30px var(--shadow-lg);
-      text-align: center;
+      color: var(--text);
+      margin: auto;
     }
-    .modal p {
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+    }
+    dialog p {
       font-size: 15px;
       margin-bottom: 20px;
       color: var(--text);
@@ -559,6 +616,133 @@
     .modal-btn-confirm { background: var(--alert); border-color: var(--alert); color: #fff; }
     .modal-btn-confirm:hover { background: #e0302a; }
 
+    /* Shortcuts widget */
+    .widget-shortcuts {
+      min-width: 274px;
+      min-height: 137px;
+    }
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 72px);
+      gap: 12px;
+      justify-content: center;
+      align-content: center;
+    }
+    .shortcut-cell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .shortcut-cell.filled:hover {
+      background-color: var(--btn-bg);
+      transform: translateY(-2px);
+    }
+    .shortcut-cell a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      gap: 6px;
+    }
+    .shortcut-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px;
+      object-fit: contain;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+    .shortcut-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-dim);
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+      padding: 0 4px;
+    }
+    .shortcut-cell.empty {
+      border: 1.5px dashed var(--border);
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+    }
+    .shortcut-cell.empty .shortcut-add-icon,
+    .shortcut-cell.empty .shortcut-label {
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .shortcut-cell.empty:hover .shortcut-add-icon,
+    .shortcut-cell.empty:hover .shortcut-label {
+      opacity: 1;
+    }
+    .shortcut-cell.add-shortcut-btn {
+      cursor: pointer;
+      border: 1.5px dashed var(--border);
+      background: transparent;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, background-color 0.2s;
+    }
+    .widget-shortcuts:hover .shortcut-cell.add-shortcut-btn {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .shortcut-cell.add-shortcut-btn:hover {
+      background-color: var(--btn-bg);
+      border-color: var(--text-dim);
+    }
+    .shortcut-add-icon {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .shortcut-cell.add-shortcut-btn:hover .shortcut-add-icon {
+      color: var(--text);
+    }
+    .shortcut-delete {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--alert);
+      color: #fff;
+      border: none;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s, transform 0.15s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .shortcut-cell:hover .shortcut-delete {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .shortcut-delete:hover {
+      transform: scale(1.1);
+    }
+
   </style>
 </head>
 <body>
@@ -569,7 +753,7 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
         </svg>
-        <span class="header-title">Start Page</span>
+        <h1 class="header-title">Start Page</h1>
       </div>
     </div>
     
@@ -586,6 +770,9 @@
         </button>
         <button class="add-widget-action" data-type="calendar" title="Add Calendar">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </button>
+        <button class="add-widget-action" data-type="shortcuts" title="Add Shortcuts">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         </button>
       </div>
     </div>
@@ -609,17 +796,41 @@
   </div>
   <div id="widget-area"></div>
 
-  <div class="modal-overlay" id="close-modal">
-    <div class="modal">
-      <p>Remove this widget?</p>
-      <div class="modal-buttons">
-        <button class="btn modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>
-        <button class="btn modal-btn modal-btn-confirm" id="modal-confirm">Remove</button>
-      </div>
+  <dialog id="close-modal" closedby="any" aria-label="Confirm widget removal">
+    <p>Remove this widget?</p>
+    <div class="modal-buttons">
+      <button class="btn modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>
+      <button class="btn modal-btn modal-btn-confirm" id="modal-confirm">Remove</button>
     </div>
-  </div>
+  </dialog>
+
+  <dialog id="shortcut-modal" closedby="any" aria-labelledby="shortcut-modal-title" style="max-width: 320px;">
+    <h2 id="shortcut-modal-title" style="font-weight: 600; margin-bottom: 16px; font-size: 16px; margin-top: 0; color: var(--text);">Add shortcut</h2>
+    <form id="shortcut-form">
+      <div style="margin-bottom: 12px;">
+        <label for="shortcut-url" style="display: block; font-size: 11px; color: var(--text-dim); margin-bottom: 4px; font-weight: 500;">URL</label>
+        <input type="text" id="shortcut-url" placeholder="https://example.com" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--btn-bg); color: var(--text); outline: none; font-size: 13px;">
+      </div>
+      <div style="margin-bottom: 20px;">
+        <label for="shortcut-title" style="display: block; font-size: 11px; color: var(--text-dim); margin-bottom: 4px; font-weight: 500;">Name</label>
+        <input type="text" id="shortcut-title" placeholder="My Site" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--btn-bg); color: var(--text); outline: none; font-size: 13px;">
+      </div>
+      <div class="modal-buttons" style="justify-content: flex-end;">
+        <button type="button" class="btn modal-btn modal-btn-cancel" id="shortcut-cancel" style="padding: 6px 14px; font-size: 13px;">Cancel</button>
+        <button type="submit" class="btn modal-btn modal-btn-confirm" style="padding: 6px 14px; font-size: 13px; background: var(--accent); border-color: var(--accent); color: #fff;">Add</button>
+      </div>
+    </form>
+  </dialog>
 
   <script>
+    // Anchor positioning polyfill conditional loading
+    if (!("anchorName" in document.documentElement.style)) {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://unpkg.com/@oddbird/css-anchor-positioning';
+      document.head.appendChild(script);
+    }
+
     const SNAP = 20;
     let snapToGrid = localStorage.getItem('snapToGrid') !== 'false';
 
@@ -666,12 +877,15 @@
         };
         if (type === 'sticky') {
           entry.text = w.querySelector('textarea').value;
+          entry.resized = w.dataset.resized === 'true';
         } else if (type === 'clock') {
           entry.format = w.dataset.format || '12h';
         } else if (type === 'calendar') {
           entry.viewMonth = parseInt(w.dataset.viewMonth);
           entry.viewYear = parseInt(w.dataset.viewYear);
-        } else {
+        } else if (type === 'shortcuts') {
+          entry.cells = JSON.parse(w.dataset.cells || '[]');
+        } else if (type === 'todo') {
           entry.items = [];
           w.querySelectorAll('.todo-item').forEach(li => {
             entry.items.push({
@@ -695,10 +909,6 @@
       });
     }
 
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.widget-menu-dropdown').forEach(d => d.classList.remove('show'));
-    });
-
     // Widget creation
     const area = document.getElementById('widget-area');
     let widgetZIndex = 10;
@@ -714,33 +924,34 @@
 
     function createWidget(type, x, y, saved) {
       const w = document.createElement('div');
-      w.className = 'widget' + (type === 'clock' ? ' widget-clock' : type === 'sticky' ? ' widget-sticky' : type === 'calendar' ? ' widget-calendar' : type === 'todo' ? ' widget-todo' : '');
+      w.className = 'widget' + (type === 'clock' ? ' widget-clock' : type === 'sticky' ? ' widget-sticky' : type === 'calendar' ? ' widget-calendar' : type === 'todo' ? ' widget-todo' : type === 'shortcuts' ? ' widget-shortcuts' : '');
       w.dataset.type = type;
       w.dataset.id = saved ? saved.id : nextWidgetId++;
       if (!saved) nextWidgetId = Math.max(nextWidgetId, parseInt(w.dataset.id) + 1);
       w.style.left = snap(saved ? saved.x : x) + 'px';
       w.style.top = snap(saved ? saved.y : y) + 'px';
-      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : 280)) + 'px';
-      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : 200)) + 'px';
+      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 358 : 280)) + 'px';
+      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 221 : 200)) + 'px';
       w.style.zIndex = saved ? saved.zIndex : ++widgetZIndex;
 
-      const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : 'Todo List';
+      const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : type === 'todo' ? 'Todo List' : 'Shortcuts';
+      const wId = w.dataset.id;
 
       w.innerHTML = `
-        <div class="widget-header">
+        <div class="widget-header" tabindex="0" role="group" aria-label="${title} widget header. Focus here and press Arrow keys to move, Shift + Arrow keys to resize.">
           <span class="widget-title">${title}</span>
           <div class="widget-menu-wrap">
-            <span class="widget-menu-btn" role="button" aria-label="Widget options">
+            <button class="widget-menu-btn" popovertarget="menu-dropdown-${wId}" aria-label="Widget options" style="anchor-name: --menu-btn-${wId}">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/>
               </svg>
-            </span>
-            <div class="widget-menu-dropdown">
-              <div class="widget-menu-item delete-widget">Remove widget</div>
+            </button>
+            <div id="menu-dropdown-${wId}" popover="auto" class="widget-menu-dropdown" style="position-anchor: --menu-btn-${wId}">
+              <button class="widget-menu-item delete-widget" type="button">Remove widget</button>
             </div>
           </div>
         </div>
-        <div class="widget-body">${type === 'sticky' ? stickyHTML(saved) : type === 'clock' ? clockHTML(saved) : type === 'calendar' ? calendarHTML() : todoHTML(saved)}</div>
+        <div class="widget-body">${type === 'sticky' ? stickyHTML(saved) : type === 'clock' ? clockHTML(saved) : type === 'calendar' ? calendarHTML() : type === 'shortcuts' ? shortcutsHTML(saved) : todoHTML(saved)}</div>
         <div class="resize-handle"></div>
       `;
 
@@ -751,22 +962,12 @@
         w.style.zIndex = ++widgetZIndex;
       });
 
-      // Dropdown menu toggle
-      const menuBtn = w.querySelector('.widget-menu-btn');
-      const menuDropdown = w.querySelector('.widget-menu-dropdown');
-      menuBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.querySelectorAll('.widget-menu-dropdown').forEach(d => {
-          if (d !== menuDropdown) d.classList.remove('show');
-        });
-        menuDropdown.classList.toggle('show');
-      });
-
       // Remove widget
       w.querySelector('.delete-widget').addEventListener('click', (e) => {
         e.stopPropagation();
-        menuDropdown.classList.remove('show');
-        showModal(() => {
+        const menuDropdown = w.querySelector('.widget-menu-dropdown');
+        if (menuDropdown.hidePopover) menuDropdown.hidePopover();
+        showModal('Remove this widget?', () => {
           if (w._clockCleanup) w._clockCleanup();
           w.remove();
           saveWidgets();
@@ -778,12 +979,65 @@
       // Resize
       setupResize(w);
 
+      // Keyboard navigation and resize for widget header
+      const header = w.querySelector('.widget-header');
+      header.addEventListener('keydown', (e) => {
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+          e.preventDefault();
+          const amount = 20; // SNAP step
+          
+          if (e.shiftKey) {
+            // Keyboard Resize
+            let wVal = w.offsetWidth;
+            let hVal = w.offsetHeight;
+            const minW = parseInt(getComputedStyle(w).minWidth) || 220;
+            const minH = parseInt(getComputedStyle(w).minHeight) || 120;
+            
+            if (e.key === 'ArrowRight') wVal += amount;
+            if (e.key === 'ArrowLeft') wVal = Math.max(minW, wVal - amount);
+            if (e.key === 'ArrowDown') hVal += amount;
+            if (e.key === 'ArrowUp') hVal = Math.max(minH, hVal - amount);
+            
+            w.style.width = wVal + 'px';
+            w.style.height = hVal + 'px';
+            
+            if (w.dataset.type === 'sticky') {
+              w.dataset.resized = 'true';
+              const ta = w.querySelector('.sticky-note textarea');
+              if (ta) {
+                ta.style.height = '100%';
+                ta.style.overflowY = 'auto';
+              }
+            }
+          } else {
+            // Keyboard Move
+            let lVal = w.offsetLeft;
+            let tVal = w.offsetTop;
+            if (e.key === 'ArrowRight') lVal += amount;
+            if (e.key === 'ArrowLeft') lVal -= amount;
+            if (e.key === 'ArrowDown') tVal += amount;
+            if (e.key === 'ArrowUp') tVal -= amount;
+            
+            w.style.left = lVal + 'px';
+            w.style.top = tVal + 'px';
+          }
+          saveWidgets();
+        }
+      });
+
       // Todo logic
       if (type === 'todo') setupTodo(w, saved);
       // Sticky logic
-      if (type === 'sticky') setupSticky(w);
+      if (type === 'sticky') {
+        if (saved && saved.resized) {
+          w.dataset.resized = 'true';
+        }
+        setupSticky(w);
+      }
       // Clock logic
       if (type === 'clock') setupClock(w, saved);
+      // Shortcuts logic
+      if (type === 'shortcuts') setupShortcuts(w, saved);
       // Calendar logic
       if (type === 'calendar') setupCalendar(w, saved);
 
@@ -799,6 +1053,11 @@
       const ta = w.querySelector('.sticky-note textarea');
       const header = w.querySelector('.widget-header');
       function autoResize() {
+        if (w.dataset.resized === 'true') {
+          ta.style.height = '100%';
+          ta.style.overflowY = 'auto';
+          return;
+        }
         ta.style.height = 'auto';
         ta.style.height = ta.scrollHeight + 'px';
         const headerH = header.offsetHeight;
@@ -817,7 +1076,7 @@
           <div class="clock-display"></div>
           <div class="clock-toggle-wrap">
             <span class="clock-switch-label">24h</span>
-            <div class="clock-switch${format === '24h' ? ' active' : ''}" aria-label="Toggle 24-hour format"></div>
+            <button class="clock-switch${format === '24h' ? ' active' : ''}" role="switch" aria-checked="${format === '24h' ? 'true' : 'false'}" aria-label="Toggle 24-hour format" type="button"></button>
           </div>
         </div>
       `;
@@ -829,10 +1088,10 @@
       const cells = Array.from({length: 35}, () => '<div class="cal-day"></div>').join('');
       return `
         <div class="cal-nav">
-          <button class="btn btn-icon cal-prev">&lsaquo;</button>
+          <button class="btn btn-icon cal-prev" aria-label="Previous month" type="button">&lsaquo;</button>
           <span class="cal-month-label"></span>
-          <button class="btn btn-sm cal-today">Today</button>
-          <button class="btn btn-icon cal-next">&rsaquo;</button>
+          <button class="btn btn-sm cal-today" type="button">Today</button>
+          <button class="btn btn-icon cal-next" aria-label="Next month" type="button">&rsaquo;</button>
         </div>
         <div class="cal-grid">${headers}${cells}</div>
       `;
@@ -858,31 +1117,20 @@
         }
       }
 
-      function updateFontSize() {
-        const fw = Math.max(0, body.offsetWidth - 70);
-        const fh = body.offsetHeight;
-        const ratio = format === '12h' ? 0.22 : 0.32;
-        const size = Math.min(fw * ratio, fh * 0.8);
-        display.style.fontSize = Math.max(16, size) + 'px';
-      }
-
       updateClockTime();
-      updateFontSize();
       const interval = setInterval(updateClockTime, 1000);
 
       toggleSwitch.addEventListener('click', () => {
         format = format === '12h' ? '24h' : '12h';
         w.dataset.format = format;
-        toggleSwitch.classList.toggle('active', format === '24h');
+        const is24 = format === '24h';
+        toggleSwitch.classList.toggle('active', is24);
+        toggleSwitch.setAttribute('aria-checked', is24 ? 'true' : 'false');
         updateClockTime();
-        updateFontSize();
         saveWidgets();
       });
 
-      const ro = new ResizeObserver(() => updateFontSize());
-      ro.observe(body);
-
-      w._clockCleanup = () => { clearInterval(interval); ro.disconnect(); };
+      w._clockCleanup = () => { clearInterval(interval); };
     }
 
     function setupCalendar(w, saved) {
@@ -956,7 +1204,7 @@
       const items = saved ? saved.items : [{ text: '', done: false }];
       const lis = items.map(it => `
         <li class="todo-item${it.done ? ' done' : ''}">
-          <input type="checkbox"${it.done ? ' checked' : ''}><input class="todo-text" placeholder="New task..." value="${(it.text || '').replace(/"/g, '&quot;')}"><span class="todo-delete">✕</span>
+          <input type="checkbox"${it.done ? ' checked' : ''}><input class="todo-text" placeholder="New task..." value="${(it.text || '').replace(/"/g, '&quot;')}"><button class="todo-delete" type="button" aria-label="Delete task">&times;</button>
         </li>
       `).join('');
       return `
@@ -986,7 +1234,7 @@
             e.preventDefault();
             const li = document.createElement('li');
             li.className = 'todo-item';
-            li.innerHTML = `<input type="checkbox"><input class="todo-text" placeholder="New task..."><span class="todo-delete">✕</span>`;
+            li.innerHTML = `<input type="checkbox"><input class="todo-text" placeholder="New task..."><button class="todo-delete" type="button" aria-label="Delete task">&times;</button>`;
             list.appendChild(li);
             li.querySelector('.todo-text').focus();
             attachEvents(li);
@@ -998,7 +1246,7 @@
       addBtn.addEventListener('click', () => {
         const li = document.createElement('li');
         li.className = 'todo-item';
-        li.innerHTML = `<input type="checkbox"><input class="todo-text" placeholder="New task..."><span class="todo-delete">✕</span>`;
+        li.innerHTML = `<input type="checkbox"><input class="todo-text" placeholder="New task..."><button class="todo-delete" type="button" aria-label="Delete task">&times;</button>`;
         list.appendChild(li);
         li.querySelector('.todo-text').focus();
         attachEvents(li);
@@ -1008,11 +1256,132 @@
       list.querySelectorAll('.todo-item').forEach(attachEvents);
     }
 
+    function shortcutsHTML(saved) {
+      return `<div class="shortcuts-grid"></div>`;
+    }
+
+    function setupShortcuts(w, saved) {
+      let cells = [];
+      if (saved && saved.cells) {
+        cells = saved.cells;
+      } else {
+        cells = [
+          { type: 'empty' },
+          { type: 'empty' },
+          { type: 'empty' },
+          { type: 'empty' }
+        ];
+      }
+      w.dataset.cells = JSON.stringify(cells);
+
+      const grid = w.querySelector('.shortcuts-grid');
+
+      function render() {
+        const cells = JSON.parse(w.dataset.cells || '[]');
+        grid.innerHTML = '';
+        cells.forEach((c, idx) => {
+          const cell = document.createElement('div');
+          if (c.type === 'shortcut') {
+            cell.className = 'shortcut-cell filled';
+            cell.title = c.title;
+            cell.innerHTML = `
+              <a href="${c.url}" target="_blank" rel="noopener noreferrer">
+                <img src="${c.faviconUrl}" alt="${c.title}" class="shortcut-icon" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23888\' stroke-width=\'2\'%3E%3Ccircle cx=\'12\' cy=\'12\' r=\'10\'/%3E%3Cpath d=\'M8 14s1.5 2 4 2 4-2 4-2\'/%3E%3Cline x1=\'9\' y1=\'9\' x2=\'9.01\' y2=\'9\'/%3E%3Cline x1=\'15\' y1=\'9\' x2=\'15.01\' y2=\'9\'/%3E%3C/svg%3E';">
+                <span class="shortcut-label">${c.title}</span>
+              </a>
+              <button class="shortcut-delete" data-index="${idx}" aria-label="Delete shortcut for ${c.title}" title="Delete shortcut">&times;</button>
+            `;
+            cell.querySelector('.shortcut-delete').addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              showModal('Delete this shortcut?', () => {
+                cells.splice(idx, 1);
+                w.dataset.cells = JSON.stringify(cells);
+                saveWidgets();
+                render();
+              });
+            });
+          } else {
+            cell.className = 'shortcut-cell empty';
+            cell.title = 'Add shortcut';
+            cell.setAttribute('role', 'button');
+            cell.setAttribute('tabindex', '0');
+            cell.setAttribute('aria-label', 'Empty shortcut slot. Press Enter to add link.');
+            cell.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                if (e.target.closest('.shortcut-delete')) return;
+                e.preventDefault();
+                cell.click();
+              }
+            });
+            cell.innerHTML = `
+              <div class="shortcut-add-icon" aria-hidden="true">+</div>
+              <span class="shortcut-label">Add link</span>
+              <button class="shortcut-delete" data-index="${idx}" aria-label="Remove empty slot" title="Delete cell">&times;</button>
+            `;
+            cell.addEventListener('click', (e) => {
+              if (e.target.closest('.shortcut-delete')) return;
+              openShortcutModal((newShortcut) => {
+                cells[idx] = {
+                  type: 'shortcut',
+                  url: newShortcut.url,
+                  title: newShortcut.title,
+                  domain: newShortcut.domain,
+                  faviconUrl: newShortcut.faviconUrl
+                };
+                w.dataset.cells = JSON.stringify(cells);
+                saveWidgets();
+                render();
+              });
+            });
+            cell.querySelector('.shortcut-delete').addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              showModal('Delete this cell?', () => {
+                cells.splice(idx, 1);
+                w.dataset.cells = JSON.stringify(cells);
+                saveWidgets();
+                render();
+              });
+            });
+          }
+          grid.appendChild(cell);
+        });
+
+        const addCell = document.createElement('button');
+        addCell.setAttribute('type', 'button');
+        addCell.setAttribute('aria-label', 'Add new shortcut link');
+        addCell.className = 'shortcut-cell add-shortcut-btn';
+        addCell.innerHTML = `
+          <div class="shortcut-add-icon">+</div>
+          <span class="shortcut-label">Add link</span>
+        `;
+        addCell.addEventListener('click', () => {
+          openShortcutModal((newShortcut) => {
+            cells.push({
+              type: 'shortcut',
+              url: newShortcut.url,
+              title: newShortcut.title,
+              domain: newShortcut.domain,
+              faviconUrl: newShortcut.faviconUrl
+            });
+            w.dataset.cells = JSON.stringify(cells);
+            saveWidgets();
+            render();
+          });
+        });
+        grid.appendChild(addCell);
+      }
+
+      render();
+    }
+
     function setupDrag(el) {
       const handle = el.querySelector('.widget-header');
       let dragging = false, startX, startY, origLeft, origTop;
 
       handle.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.widget-menu-wrap')) return;
         dragging = true;
         startX = e.clientX;
         startY = e.clientY;
@@ -1023,18 +1392,24 @@
 
       document.addEventListener('mousemove', (e) => {
         if (!dragging) return;
-        el.style.left = snap(origLeft + e.clientX - startX) + 'px';
-        el.style.top = snap(origTop + e.clientY - startY) + 'px';
+        el.style.left = (origLeft + e.clientX - startX) + 'px';
+        el.style.top = (origTop + e.clientY - startY) + 'px';
       });
 
       document.addEventListener('mouseup', () => {
-        if (dragging) { dragging = false; saveWidgets(); }
+        if (dragging) {
+          dragging = false;
+          el.style.left = snap(el.offsetLeft) + 'px';
+          el.style.top = snap(el.offsetTop) + 'px';
+          saveWidgets();
+        }
       });
     }
 
     function setupResize(el) {
       const handle = el.querySelector('.resize-handle');
       let resizing = false, startX, startY, startW, startH;
+      let paddingW = 34, paddingH = 65;
 
       const minW = parseInt(getComputedStyle(el).minWidth);
       const minH = parseInt(getComputedStyle(el).minHeight);
@@ -1045,20 +1420,60 @@
         startY = e.clientY;
         startW = el.offsetWidth;
         startH = el.offsetHeight;
+
+        if (el.dataset.type === 'shortcuts') {
+          const grid = el.querySelector('.shortcuts-grid');
+          paddingW = grid ? (el.offsetWidth - grid.clientWidth) : 34;
+          paddingH = grid ? (el.offsetHeight - grid.clientHeight) : 65;
+        }
+
         e.preventDefault();
         e.stopPropagation();
       });
 
       document.addEventListener('mousemove', (e) => {
         if (!resizing) return;
-        const newW = Math.max(minW, startW + e.clientX - startX);
-        const newH = Math.max(minH, startH + e.clientY - startY);
-        el.style.width = snap(newW) + 'px';
-        el.style.height = snap(newH) + 'px';
+        let newW = Math.max(minW, startW + e.clientX - startX);
+        let newH = Math.max(minH, startH + e.clientY - startY);
+
+        el.style.width = newW + 'px';
+        el.style.height = newH + 'px';
       });
 
       document.addEventListener('mouseup', () => {
-        if (resizing) { resizing = false; saveWidgets(); }
+        if (resizing) {
+          resizing = false;
+          if (el.dataset.type === 'shortcuts') {
+            const CELL_SIZE = 72;
+            const GAP = 12;
+            const curW = el.offsetWidth;
+            let C = Math.round((curW - paddingW + GAP) / (CELL_SIZE + GAP));
+            C = Math.max(1, Math.min(12, C));
+            const cells = JSON.parse(el.dataset.cells || '[]');
+            const totalItems = cells.length + 1;
+            const R = Math.ceil(totalItems / C);
+
+            const snapW = C * CELL_SIZE + (C - 1) * GAP + paddingW;
+            const snapH = R * CELL_SIZE + (R - 1) * GAP + paddingH;
+
+            el.style.width = snapW + 'px';
+            el.style.height = snapH + 'px';
+          } else {
+            el.style.width = snap(el.offsetWidth) + 'px';
+            el.style.height = snap(el.offsetHeight) + 'px';
+          }
+
+          if (el.dataset.type === 'sticky') {
+            el.dataset.resized = 'true';
+            const ta = el.querySelector('.sticky-note textarea');
+            if (ta) {
+              ta.style.height = '100%';
+              ta.style.overflowY = 'auto';
+            }
+          }
+
+          saveWidgets();
+        }
       });
     }
 
@@ -1068,27 +1483,106 @@
     const modalConfirm = document.getElementById('modal-confirm');
     let modalCallback = null;
 
-    function showModal(cb) {
+    function showModal(text, cb) {
+      closeModal.querySelector('p').textContent = text;
       modalCallback = cb;
-      closeModal.classList.add('show');
+      closeModal.showModal();
     }
 
     modalCancel.addEventListener('click', () => {
-      closeModal.classList.remove('show');
+      closeModal.close();
       modalCallback = null;
     });
 
     modalConfirm.addEventListener('click', () => {
-      closeModal.classList.remove('show');
+      closeModal.close();
       if (modalCallback) modalCallback();
       modalCallback = null;
     });
 
-    closeModal.addEventListener('click', (e) => {
-      if (e.target === closeModal) {
-        closeModal.classList.remove('show');
-        modalCallback = null;
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      closeModal.addEventListener('click', (e) => {
+        if (e.target !== closeModal) return;
+        const rect = closeModal.getBoundingClientRect();
+        const isContent = (
+          rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+        );
+        if (!isContent) {
+          closeModal.close();
+          modalCallback = null;
+        }
+      });
+    }
+
+    // Shortcut Modal Form Controller
+    const shortcutModal = document.getElementById('shortcut-modal');
+    const shortcutForm = document.getElementById('shortcut-form');
+    const shortcutUrlInput = document.getElementById('shortcut-url');
+    const shortcutTitleInput = document.getElementById('shortcut-title');
+    const shortcutCancel = document.getElementById('shortcut-cancel');
+    let shortcutCallback = null;
+
+    function openShortcutModal(cb) {
+      shortcutCallback = cb;
+      shortcutUrlInput.value = '';
+      shortcutTitleInput.value = '';
+      shortcutModal.showModal();
+      shortcutUrlInput.focus();
+    }
+
+    shortcutCancel.addEventListener('click', () => {
+      shortcutModal.close();
+      shortcutCallback = null;
+    });
+
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      shortcutModal.addEventListener('click', (e) => {
+        if (e.target !== shortcutModal) return;
+        const rect = shortcutModal.getBoundingClientRect();
+        const isContent = (
+          rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+        );
+        if (!isContent) {
+          shortcutModal.close();
+          shortcutCallback = null;
+        }
+      });
+    }
+
+    shortcutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const urlVal = shortcutUrlInput.value.trim();
+      const titleVal = shortcutTitleInput.value.trim();
+
+      let validatedUrl = urlVal;
+      if (!/^https?:\/\//i.test(validatedUrl)) {
+        validatedUrl = 'https://' + validatedUrl;
       }
+
+      let parsedDomain = '';
+      try {
+        const u = new URL(validatedUrl);
+        parsedDomain = u.hostname.replace(/^www\./i, '');
+      } catch (err) {
+        alert('Please enter a valid URL.');
+        return;
+      }
+
+      const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${parsedDomain}`;
+
+      if (shortcutCallback) {
+        shortcutCallback({
+          url: validatedUrl,
+          title: titleVal,
+          domain: parsedDomain,
+          faviconUrl: faviconUrl
+        });
+      }
+
+      shortcutModal.close();
+      shortcutCallback = null;
     });
 
     // Sticky text change tracking
