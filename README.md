@@ -6,6 +6,10 @@ Features draggable, resizable widgets designed for focus and daily productivity.
 
 ![Zen Tab showing sticky note, To Do list, and Pomodoro timer widgets.](zen-tab.png)
 
+> [!NOTE]
+> This app was entirely vibe-coded, AKA "AI slop". I'll leave it you to decided whether or
+> not to use it.
+
 ## Widgets
 
 - **Clock** — Large digital display with 12h/24h toggle. Font scales with widget size.
