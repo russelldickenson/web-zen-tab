@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Start Page</title>
+  <title>ZenTab</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235E5E5E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7'/%3E%3Crect x='14' y='3' width='7' height='7'/%3E%3Crect x='3' y='14' width='7' height='7'/%3E%3Crect x='14' y='14' width='7' height='7'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -413,6 +413,40 @@
     .widget-clock[data-format="24h"] {
       --clock-ratio: 0.32;
     }
+
+    /* Pomodoro widget */
+    .widget-pomodoro { min-width: 300px; min-height: 340px; }
+    .widget-pomodoro .widget-body { overflow: hidden; padding: 14px 16px 16px; }
+    .pomodoro-body {
+      height: 100%; display: flex; flex-direction: column; align-items: center;
+      justify-content: space-between; gap: 12px;
+    }
+    .pomodoro-modes {
+      display: flex; width: 100%; padding: 3px; gap: 2px;
+      background: var(--btn-bg); border: 1px solid var(--btn-border); border-radius: 9px;
+    }
+    .pomodoro-mode {
+      flex: 1; border: 0; border-radius: 6px; padding: 7px 4px; background: transparent;
+      color: var(--text-muted); cursor: pointer; font: inherit; font-size: 11px; font-weight: 600;
+      transition: color 0.2s, background 0.2s;
+    }
+    .pomodoro-mode:hover { color: var(--text); }
+    .pomodoro-mode.active { background: rgba(0, 180, 216, 0.18); color: var(--accent); }
+    .pomodoro-mode:focus-visible, .pomodoro-start:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .pomodoro-ring {
+      --progress: 0; width: min(168px, 58vw); aspect-ratio: 1; border-radius: 50%; padding: 9px;
+      background: conic-gradient(var(--accent) calc(var(--progress) * 1%), var(--border) 0);
+      transition: background 0.25s; display: grid; place-items: center;
+    }
+    .pomodoro-ring-inner {
+      width: 100%; height: 100%; border-radius: 50%; background: var(--surface);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 1px solid var(--border-subtle);
+    }
+    .pomodoro-time { font: 600 clamp(32px, 8vw, 43px)/1 'JetBrains Mono', monospace; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: var(--text); }
+    .pomodoro-status { margin-top: 6px; color: var(--text-muted); font-size: 11px; }
+    .pomodoro-start { width: 100%; padding: 12px 16px; border-radius: 9px; font: inherit; font-size: 15px; font-weight: 600; }
+    .pomodoro-summary { color: var(--text-muted); font-size: 11px; min-height: 14px; }
     .clock-toggle-wrap {
       display: flex;
       flex-direction: column;
@@ -769,7 +803,7 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
         </svg>
-        <h1 class="header-title">Start Page</h1>
+        <h1 class="header-title">ZenTab</h1>
       </div>
     </div>
     
@@ -789,6 +823,9 @@
         </button>
         <button class="add-widget-action" data-type="shortcuts" title="Add Shortcuts">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </button>
+        <button class="add-widget-action" data-type="pomodoro" title="Add Pomodoro Timer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 5V2"/><path d="M12 9v4l3 2"/></svg>
         </button>
       </div>
     </div>
@@ -901,6 +938,8 @@
           entry.viewYear = parseInt(w.dataset.viewYear);
         } else if (type === 'shortcuts') {
           entry.cells = JSON.parse(w.dataset.cells || '[]');
+        } else if (type === 'pomodoro') {
+          entry.pomodoro = JSON.parse(w.dataset.pomodoro || '{}');
         } else if (type === 'todo') {
           entry.items = [];
           w.querySelectorAll('.todo-item').forEach(li => {
@@ -940,17 +979,17 @@
 
     function createWidget(type, x, y, saved) {
       const w = document.createElement('div');
-      w.className = 'widget' + (type === 'clock' ? ' widget-clock' : type === 'sticky' ? ' widget-sticky' : type === 'calendar' ? ' widget-calendar' : type === 'todo' ? ' widget-todo' : type === 'shortcuts' ? ' widget-shortcuts' : '');
+      w.className = 'widget' + (type === 'clock' ? ' widget-clock' : type === 'sticky' ? ' widget-sticky' : type === 'calendar' ? ' widget-calendar' : type === 'todo' ? ' widget-todo' : type === 'shortcuts' ? ' widget-shortcuts' : type === 'pomodoro' ? ' widget-pomodoro' : '');
       w.dataset.type = type;
       w.dataset.id = saved ? saved.id : nextWidgetId++;
       nextWidgetId = Math.max(nextWidgetId, parseInt(w.dataset.id) + 1);
       w.style.left = snap(saved ? saved.x : x) + 'px';
       w.style.top = snap(saved ? saved.y : y) + 'px';
-      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 274 : 280)) + 'px';
-      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 149 : 200)) + 'px';
+      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 274 : type === 'pomodoro' ? 320 : 280)) + 'px';
+      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 149 : type === 'pomodoro' ? 365 : 200)) + 'px';
       w.style.zIndex = saved ? saved.zIndex : ++widgetZIndex;
 
-      const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : type === 'todo' ? 'Todo List' : 'Shortcuts';
+      const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : type === 'todo' ? 'Todo List' : type === 'pomodoro' ? 'Pomodoro' : 'Shortcuts';
       const wId = w.dataset.id;
 
       w.innerHTML = `
@@ -967,7 +1006,7 @@
             </div>
           </div>
         </div>
-        <div class="widget-body">${type === 'sticky' ? stickyHTML(saved) : type === 'clock' ? clockHTML(saved) : type === 'calendar' ? calendarHTML() : type === 'shortcuts' ? shortcutsHTML(saved) : todoHTML(saved)}</div>
+        <div class="widget-body">${type === 'sticky' ? stickyHTML(saved) : type === 'clock' ? clockHTML(saved) : type === 'calendar' ? calendarHTML() : type === 'shortcuts' ? shortcutsHTML(saved) : type === 'pomodoro' ? pomodoroHTML() : todoHTML(saved)}</div>
         <div class="resize-handle"></div>
       `;
 
@@ -986,7 +1025,7 @@
         const triggerBtn = w.querySelector('.widget-menu-btn');
         if (triggerBtn) triggerBtn.blur();
         showModal('Remove this widget?', () => {
-          if (w._clockCleanup) w._clockCleanup();
+          if (w._cleanup) w._cleanup();
           w.remove();
           saveWidgets();
         });
@@ -1054,6 +1093,7 @@
       }
       // Clock logic
       if (type === 'clock') setupClock(w, saved);
+      if (type === 'pomodoro') setupPomodoro(w, saved);
       // Shortcuts logic
       if (type === 'shortcuts') setupShortcuts(w, saved);
       // Calendar logic
@@ -1148,7 +1188,137 @@
         saveWidgets();
       });
 
-      w._clockCleanup = () => { clearInterval(interval); };
+      w._cleanup = () => { clearInterval(interval); };
+    }
+
+    function pomodoroHTML() {
+      return `
+        <div class="pomodoro-body">
+          <div class="pomodoro-modes" role="group" aria-label="Pomodoro session type">
+            <button class="pomodoro-mode" type="button" data-mode="focus">Focus</button>
+            <button class="pomodoro-mode" type="button" data-mode="short">Short break</button>
+            <button class="pomodoro-mode" type="button" data-mode="long">Long break</button>
+          </div>
+          <div class="pomodoro-ring" role="timer" aria-label="25 minutes remaining"><div class="pomodoro-ring-inner"><div class="pomodoro-time">25:00</div><div class="pomodoro-status">Ready to focus</div></div></div>
+          <button class="btn btn-primary pomodoro-start" type="button">Start focus session</button>
+          <div class="pomodoro-summary" aria-live="polite">0 focus sessions today</div>
+        </div>
+      `;
+    }
+
+    function setupPomodoro(w, saved) {
+      const durations = { focus: 25 * 60 * 1000, short: 5 * 60 * 1000, long: 15 * 60 * 1000 };
+      const labels = { focus: 'Focus', short: 'Short break', long: 'Long break' };
+      const body = w.querySelector('.widget-body');
+      const ring = body.querySelector('.pomodoro-ring');
+      const time = body.querySelector('.pomodoro-time');
+      const status = body.querySelector('.pomodoro-status');
+      const start = body.querySelector('.pomodoro-start');
+      const summary = body.querySelector('.pomodoro-summary');
+      let state = saved && saved.pomodoro && Object.keys(saved.pomodoro).length ? saved.pomodoro : {
+        mode: 'focus', running: false, remainingMs: durations.focus, completedFocus: 0
+      };
+      state.mode = durations[state.mode] ? state.mode : 'focus';
+      state.completedFocus = Number(state.completedFocus) || 0;
+      if (!state.running && !Number.isFinite(state.remainingMs)) state.remainingMs = durations[state.mode];
+      let interval = null;
+
+      function persist() {
+        w.dataset.pomodoro = JSON.stringify(state);
+        saveWidgets();
+      }
+
+      function formatTime(ms) {
+        const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+        return `${String(Math.floor(totalSeconds / 60)).padStart(2, '0')}:${String(totalSeconds % 60).padStart(2, '0')}`;
+      }
+
+      function remaining() {
+        return state.running ? Math.max(0, state.endTime - Date.now()) : state.remainingMs;
+      }
+
+      function render() {
+        const remainingMs = remaining();
+        time.textContent = formatTime(remainingMs);
+        ring.setAttribute('aria-label', `${Math.ceil(remainingMs / 60000)} minutes remaining`);
+        ring.style.setProperty('--progress', String(((durations[state.mode] - remainingMs) / durations[state.mode]) * 100));
+        body.querySelectorAll('.pomodoro-mode').forEach(button => {
+          const active = button.dataset.mode === state.mode;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        const session = labels[state.mode].toLowerCase();
+        status.textContent = state.running ? `${labels[state.mode]} in progress` : `Ready for ${session}`;
+        start.textContent = state.running ? 'Stop session' : `Start ${session} session`;
+        summary.textContent = `${state.completedFocus} focus session${state.completedFocus === 1 ? '' : 's'} today`;
+      }
+
+      function playCompletionBeep() {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          const context = new AudioContextClass();
+          const oscillator = context.createOscillator();
+          const gain = context.createGain();
+          oscillator.frequency.value = 880;
+          gain.gain.setValueAtTime(0.0001, context.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.12, context.currentTime + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.35);
+          oscillator.connect(gain).connect(context.destination);
+          oscillator.start(); oscillator.stop(context.currentTime + 0.36);
+          oscillator.addEventListener('ended', () => context.close());
+        } catch { /* Audio feedback is optional when the browser blocks playback. */ }
+      }
+
+      function notifyCompletion() {
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification(`${labels[state.mode]} complete`, { body: 'Your Pomodoro timer has finished.' });
+        }
+      }
+
+      function finish() {
+        clearInterval(interval); interval = null;
+        const completedMode = state.mode;
+        state.running = false;
+        state.endTime = null;
+        state.remainingMs = durations[state.mode];
+        if (completedMode === 'focus') state.completedFocus++;
+        playCompletionBeep(); notifyCompletion(); persist(); render();
+      }
+
+      function tick() {
+        if (remaining() <= 0) { finish(); return; }
+        render();
+      }
+
+      function startTimer() {
+        if (state.running) {
+          state.remainingMs = remaining();
+          state.running = false;
+          state.endTime = null;
+          clearInterval(interval); interval = null;
+        } else {
+          if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+          state.running = true;
+          state.endTime = Date.now() + state.remainingMs;
+          interval = setInterval(tick, 250);
+        }
+        persist(); render();
+      }
+
+      body.querySelectorAll('.pomodoro-mode').forEach(button => button.addEventListener('click', () => {
+        if (state.running) { clearInterval(interval); interval = null; }
+        state.mode = button.dataset.mode;
+        state.running = false; state.endTime = null; state.remainingMs = durations[state.mode];
+        persist(); render();
+      }));
+      start.addEventListener('click', startTimer);
+      if (state.running) {
+        if (remaining() <= 0) finish();
+        else interval = setInterval(tick, 250);
+      }
+      render();
+      w._cleanup = () => { clearInterval(interval); };
     }
 
     function setupCalendar(w, saved) {
