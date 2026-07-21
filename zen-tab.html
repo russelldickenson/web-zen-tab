@@ -415,11 +415,11 @@
     }
 
     /* Pomodoro widget */
-    .widget-pomodoro { min-width: 300px; min-height: 340px; }
-    .widget-pomodoro .widget-body { overflow: hidden; padding: 14px 16px 16px; }
+    .widget-pomodoro { min-width: 260px; min-height: 200px; }
+    .widget-pomodoro .widget-body { overflow: hidden; padding: 10px 14px 12px; }
     .pomodoro-body {
       height: 100%; display: flex; flex-direction: column; align-items: center;
-      justify-content: space-between; gap: 12px;
+      justify-content: space-between; gap: 8px;
     }
     .pomodoro-modes {
       display: flex; width: 100%; padding: 3px; gap: 2px;
@@ -433,20 +433,13 @@
     .pomodoro-mode:hover { color: var(--text); }
     .pomodoro-mode.active { background: rgba(0, 180, 216, 0.18); color: var(--accent); }
     .pomodoro-mode:focus-visible, .pomodoro-start:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .pomodoro-ring {
-      --progress: 0; width: min(168px, 58vw); aspect-ratio: 1; border-radius: 50%; padding: 9px;
-      background: conic-gradient(var(--accent) calc(var(--progress) * 1%), var(--border) 0);
-      transition: background 0.25s; display: grid; place-items: center;
-    }
-    .pomodoro-ring-inner {
-      width: 100%; height: 100%; border-radius: 50%; background: var(--surface);
+    .pomodoro-display {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      border: 1px solid var(--border-subtle);
+      padding: 6px 0; width: 100%;
     }
-    .pomodoro-time { font: 600 clamp(32px, 8vw, 43px)/1 'JetBrains Mono', monospace; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: var(--text); }
-    .pomodoro-status { margin-top: 6px; color: var(--text-muted); font-size: 11px; }
-    .pomodoro-start { width: 100%; padding: 12px 16px; border-radius: 9px; font: inherit; font-size: 15px; font-weight: 600; }
-    .pomodoro-summary { color: var(--text-muted); font-size: 11px; min-height: 14px; }
+    .pomodoro-time { font: 600 clamp(36px, 10vw, 48px)/1 'JetBrains Mono', monospace; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: var(--text); }
+    .pomodoro-status { margin-top: 4px; color: var(--accent); font-size: 11px; font-weight: 500; min-height: 14px; }
+    .pomodoro-start { width: 100%; padding: 10px 16px; border-radius: 9px; font: inherit; font-size: 14px; font-weight: 600; }
     .clock-toggle-wrap {
       display: flex;
       flex-direction: column;
@@ -985,8 +978,8 @@
       nextWidgetId = Math.max(nextWidgetId, parseInt(w.dataset.id) + 1);
       w.style.left = snap(saved ? saved.x : x) + 'px';
       w.style.top = snap(saved ? saved.y : y) + 'px';
-      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 274 : type === 'pomodoro' ? 320 : 280)) + 'px';
-      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 149 : type === 'pomodoro' ? 365 : 200)) + 'px';
+      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 274 : type === 'pomodoro' ? 290 : 280)) + 'px';
+      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 149 : type === 'pomodoro' ? 240 : 200)) + 'px';
       w.style.zIndex = saved ? saved.zIndex : ++widgetZIndex;
 
       const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : type === 'todo' ? 'Todo List' : type === 'pomodoro' ? 'Pomodoro' : 'Shortcuts';
@@ -1199,9 +1192,11 @@
             <button class="pomodoro-mode" type="button" data-mode="short">Short break</button>
             <button class="pomodoro-mode" type="button" data-mode="long">Long break</button>
           </div>
-          <div class="pomodoro-ring" role="timer" aria-label="25 minutes remaining"><div class="pomodoro-ring-inner"><div class="pomodoro-time">25:00</div><div class="pomodoro-status">Ready to focus</div></div></div>
+          <div class="pomodoro-display" role="timer" aria-label="25 minutes remaining">
+            <div class="pomodoro-time">25:00</div>
+            <div class="pomodoro-status"></div>
+          </div>
           <button class="btn btn-primary pomodoro-start" type="button">Start focus session</button>
-          <div class="pomodoro-summary" aria-live="polite">0 focus sessions today</div>
         </div>
       `;
     }
@@ -1210,11 +1205,10 @@
       const durations = { focus: 25 * 60 * 1000, short: 5 * 60 * 1000, long: 15 * 60 * 1000 };
       const labels = { focus: 'Focus', short: 'Short break', long: 'Long break' };
       const body = w.querySelector('.widget-body');
-      const ring = body.querySelector('.pomodoro-ring');
+      const display = body.querySelector('.pomodoro-display');
       const time = body.querySelector('.pomodoro-time');
       const status = body.querySelector('.pomodoro-status');
       const start = body.querySelector('.pomodoro-start');
-      const summary = body.querySelector('.pomodoro-summary');
       let state = saved && saved.pomodoro && Object.keys(saved.pomodoro).length ? saved.pomodoro : {
         mode: 'focus', running: false, remainingMs: durations.focus, completedFocus: 0
       };
@@ -1240,17 +1234,15 @@
       function render() {
         const remainingMs = remaining();
         time.textContent = formatTime(remainingMs);
-        ring.setAttribute('aria-label', `${Math.ceil(remainingMs / 60000)} minutes remaining`);
-        ring.style.setProperty('--progress', String(((durations[state.mode] - remainingMs) / durations[state.mode]) * 100));
+        if (display) display.setAttribute('aria-label', `${Math.ceil(remainingMs / 60000)} minutes remaining`);
         body.querySelectorAll('.pomodoro-mode').forEach(button => {
           const active = button.dataset.mode === state.mode;
           button.classList.toggle('active', active);
           button.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
         const session = labels[state.mode].toLowerCase();
-        status.textContent = state.running ? `${labels[state.mode]} in progress` : `Ready for ${session}`;
+        status.textContent = state.running ? `${labels[state.mode]} in progress` : '';
         start.textContent = state.running ? 'Stop session' : `Start ${session} session`;
-        summary.textContent = `${state.completedFocus} focus session${state.completedFocus === 1 ? '' : 's'} today`;
       }
 
       function playCompletionBeep() {
