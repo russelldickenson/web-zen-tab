@@ -4,6 +4,8 @@ A customizable browser app to help you focused and maintain your Zen.
 
 Features draggable, resizable widgets designed for focus and daily productivity.
 
+![Zen Tab showing sticky note, To Do list, and Pomodoro timer widgets.](zen-tab.png)
+
 ## Widgets
 
 - **Clock** — Large digital display with 12h/24h toggle. Font scales with widget size.
