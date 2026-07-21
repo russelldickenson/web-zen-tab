@@ -6,9 +6,9 @@ Features draggable, resizable widgets designed for focus and daily productivity.
 
 ![Zen Tab showing sticky note, To Do list, and Pomodoro timer widgets.](zen-tab.png)
 
-> [!NOTE]
-> This app was entirely vibe-coded, AKA "AI slop". I'll leave it you to decided whether or
-> not to use it.
+> [!IMPORTANT]
+> This app was entirely vibe-coded, AKA "AI slop". There are almost certainly similar apps
+> of better quality than this one. I created this mainly to experiment with agentic AI.
 
 ## Widgets
 
