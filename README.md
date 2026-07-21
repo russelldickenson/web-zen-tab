@@ -16,8 +16,8 @@ Features draggable, resizable widgets designed for focus and daily productivity.
 
 ## Usage
 
-Open `zen-tab.html` in a browser. By default, no widgets are added. Add and move the available widgets
-to suit your **Zen**.
+Open `zen-tab.html` in a browser. By default, no widgets are added. Add, move, and resize the available
+widgets to suit your _Zen_.
 
 - **Add a widget** — click the *Add Widget* button in the top bar and select a widget type.
 - **Delete a widget** — click the ✕ button on its title bar and confirm the prompt.
