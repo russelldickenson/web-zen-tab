@@ -15,6 +15,7 @@ Features draggable, resizable widgets designed for focus and daily productivity.
 - **Clock** — Large digital display with 12h/24h toggle. Font scales with widget size.
 - **Sticky Note** — Free-form text area (pale yellow background in light mode).
 - **Todo List** — Checkbox list with strikethrough on completion, inline editing, `[Enter]` to add.
+- **Shortcuts** - Collection of shortcuts/bookmarks for your favourite web sites.
 - **Calendar** — Monthly grid with prev/next/Today navigation; today is highlighted.
 - **Pomodoro** - Timer widget for Pomodoro technique. Focus mode, short break, and long break options.
 
