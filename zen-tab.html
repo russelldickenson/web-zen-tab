@@ -12,13 +12,13 @@
     :root {
       --bg: #0B0B0C;
       --top-bar-bg: rgba(11, 11, 12, 0.7);
-      --surface: rgba(24, 24, 28, 0.65);
+      --surface: rgba(24, 24, 28, 0.85);
       --text: #FFFFFF;
       --text-dim: rgba(255, 255, 255, 0.75);
       --text-muted: rgba(255, 255, 255, 0.45);
       --text-faint: rgba(255, 255, 255, 0.25);
       --border: rgba(255, 255, 255, 0.12);
-      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-subtle: rgba(255, 255, 255, 0.15);
       --btn-bg: rgba(255, 255, 255, 0.06);
       --btn-border: rgba(255, 255, 255, 0.08);
       --btn-hover: rgba(255, 255, 255, 0.12);
@@ -26,7 +26,7 @@
       --accent-hover: #0096C7;
       --alert: #FF453A;
       --success: #30D158;
-      --shadow: rgba(0, 0, 0, 0.2);
+      --shadow: rgba(0, 0, 0, 0.35);
       --shadow-lg: rgba(0, 0, 0, 0.45);
       --checkbox-border: rgba(255, 255, 255, 0.3);
       --todo-border: rgba(255, 255, 255, 0.08);
@@ -34,15 +34,15 @@
       --resize-line: rgba(255, 255, 255, 0.25);
     }
     [data-theme="light"] {
-      --bg: #F4F4F7;
+      --bg: #E8E8EC;
       --top-bar-bg: rgba(244, 244, 247, 0.7);
-      --surface: rgba(255, 255, 255, 0.65);
+      --surface: rgba(255, 255, 255, 0.85);
       --text: #1C1C1E;
       --text-dim: rgba(0, 0, 0, 0.7);
       --text-muted: rgba(0, 0, 0, 0.45);
       --text-faint: rgba(0, 0, 0, 0.25);
       --border: rgba(0, 0, 0, 0.1);
-      --border-subtle: rgba(0, 0, 0, 0.05);
+      --border-subtle: rgba(0, 0, 0, 0.12);
       --btn-bg: rgba(0, 0, 0, 0.05);
       --btn-border: rgba(0, 0, 0, 0.08);
       --btn-hover: rgba(0, 0, 0, 0.08);
@@ -50,7 +50,7 @@
       --accent-hover: #005F9E;
       --alert: #FF3B30;
       --success: #34C759;
-      --shadow: rgba(0, 0, 0, 0.05);
+      --shadow: rgba(0, 0, 0, 0.15);
       --shadow-lg: rgba(0, 0, 0, 0.12);
       --checkbox-border: rgba(0, 0, 0, 0.25);
       --todo-border: rgba(0, 0, 0, 0.06);
@@ -979,8 +979,8 @@
       nextWidgetId = Math.max(nextWidgetId, parseInt(w.dataset.id) + 1);
       w.style.left = snap(saved ? saved.x : x) + 'px';
       w.style.top = snap(saved ? saved.y : y) + 'px';
-      w.style.width = (saved ? saved.width : (type === 'todo' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 274 : type === 'pomodoro' ? 290 : 280)) + 'px';
-      w.style.height = (saved ? saved.height : (type === 'todo' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 149 : type === 'pomodoro' ? 240 : 200)) + 'px';
+      w.style.width = (saved ? saved.width : (type === 'todo' || type === 'sticky' ? 300 : type === 'clock' ? 320 : type === 'calendar' ? 300 : type === 'shortcuts' ? 274 : type === 'pomodoro' ? 290 : 280)) + 'px';
+      w.style.height = (saved ? saved.height : (type === 'todo' || type === 'sticky' ? 250 : type === 'clock' ? 100 : type === 'calendar' ? 300 : type === 'shortcuts' ? 149 : type === 'pomodoro' ? 240 : 200)) + 'px';
       w.style.zIndex = saved ? saved.zIndex : ++widgetZIndex;
 
       const title = type === 'sticky' ? 'Sticky Note' : type === 'clock' ? 'Clock' : type === 'calendar' ? 'Calendar' : type === 'todo' ? 'Todo List' : type === 'pomodoro' ? 'Pomodoro' : 'Shortcuts';
@@ -1113,7 +1113,7 @@
         ta.style.height = 'auto';
         ta.style.height = ta.scrollHeight + 'px';
         const headerH = header.offsetHeight;
-        const newH = Math.max(200, headerH + ta.scrollHeight + 32);
+        const newH = Math.max(250, headerH + ta.scrollHeight + 32);
         w.style.height = newH + 'px';
         saveWidgets();
       }
