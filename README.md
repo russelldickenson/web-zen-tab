@@ -4,7 +4,7 @@ A customizable browser app to help you focused and maintain your Zen.
 
 Features draggable, resizable widgets designed for focus and daily productivity.
 
-![Zen Tab showing sticky note, To Do list, and Pomodoro timer widgets.](zen-tab.png)
+![Zen Tab showing sticky note, To Do list, and Pomodoro timer widgets.](zen-tab.wenp)
 
 > [!IMPORTANT]
 > This app was entirely vibe-coded, AKA "AI slop". There are almost certainly similar apps
